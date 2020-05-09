@@ -1,0 +1,87 @@
+QMainWindow {
+   border-image: url(../images/bck2.png);
+   }
+
+QPushButton {
+    min-width: 100px;
+    padding: 10px;
+    color: black;
+    background-color: yellow;
+    border-top: 3px transparent;
+    border-bottom: 3px transparent;
+    border-right: 10px transparent;
+    border-left: 10px transparent;
+    font-size: 36px;
+    }
+
+QPushButton:disabled {
+    color: gray;
+    }
+
+QPushButton:pressed {
+    background-color: rgb(224, 0, 0);
+    }
+QPushButton:hover:!pressed{
+    border: 1px solid red;
+    }
+
+QLineEdit, QTextEdit{
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 0 8px;
+    background: rgba(255, 255, 0, 122);
+    selection-background-color: darkgray;
+}
+
+QLineEdit:read-only {
+    background: lightblue;
+}
+QTextEdit:read-only {
+    background: lightblue;
+}
+QLabel{
+    border: 0px solid gray;
+    border-radius: 0px;
+    padding: 0 8px;
+    color: white;
+    background: rgba(255, 255, 0, 0);
+    selection-background-color: darkgray;
+}
+QProgressBar{
+    border: 2px solid gray;
+    border-radius: 5px;
+    text-align: center;
+}
+QProgressBar::chunk {
+    background-color: #05B8CC;
+    width: 20px;
+}
+QListWidget{
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 0 8px;
+    background: rgba(255, 255, 0, 122);
+    selection-background-color: darkgray;
+}
+QMessageBox {
+background-color: rgb(51, 51, 51);
+}
+
+QMessageBox QLabel {
+    color: rgb(200, 200, 200);
+}
+QScrollArea {
+    border: 2px solid gray;
+    border-radius: 2px;
+    padding: 0 8px;
+    color: white;
+    background: rgba(255, 255, 0, 0);
+}
+QCheckBox {
+    spacing: 0px;
+}
+
+QCheckBox::indicator {
+    width: 13px;
+    height: 13px;
+}
