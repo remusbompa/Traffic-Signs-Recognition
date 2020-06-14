@@ -1,9 +1,6 @@
 from __future__ import division
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.autograd import Variable
 import numpy as np
 import cv2
 
@@ -108,13 +105,12 @@ def write_results(prediction, confidence, num_classes, nms_conf=0.4):
 
     batch_size = prediction.size(0)
 
-    write = False
+    output = torch.empty((0, 8))
 
     for ind in range(batch_size):
         image_pred = prediction[ind]  # image Tensor
         # confidence threshholding
         # NMS
-
         max_conf, max_conf_score = torch.max(image_pred[:, 5:5 + num_classes], 1)
         max_conf = max_conf.float().unsqueeze(1)
         max_conf_score = max_conf_score.float().unsqueeze(1)
@@ -170,17 +166,12 @@ def write_results(prediction, confidence, num_classes, nms_conf=0.4):
                 ind)  # Repeat the batch_id for as many detections of the class cls in the image
             seq = batch_ind, image_pred_class
 
-            if not write:
+            if np.size(output, 0) == 0:
                 output = torch.cat(seq, 1)
-                write = True
             else:
                 out = torch.cat(seq, 1)
                 output = torch.cat((output, out))
-
-    try:
-        return output
-    except:
-        return 0
+    return output
 
 
 def letterbox_image(img, inp_dim):

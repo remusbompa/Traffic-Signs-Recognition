@@ -1,12 +1,12 @@
 from __future__ import division
 import time
 
-from CVModule.DrawImages import ImagesHandler
-from util import *
+from VisionPackage.DrawImages import ImagesHandler
+from utilities import *
 import argparse
 import os
 import os.path as osp
-from darknet import Darknet
+from model import Darknet
 
 
 def arg_parse():
@@ -52,7 +52,7 @@ def print_info(widget, error, signal, *msg):
             signal.emit("finished")
 
 
-def main(widget=None):
+def detect_images(widget=None):
     if not widget:
         args = arg_parse()
     else:
@@ -96,6 +96,7 @@ def main(widget=None):
     finish_load_net = time.time()
 
     model.net_info["height"] = args.reso
+    model.net_info["width"] = args.reso
     inp_dim = int(model.net_info["height"])
     assert inp_dim % 32 == 0
     assert inp_dim > 32
@@ -111,12 +112,12 @@ def main(widget=None):
     print_info(widget, False, "info", "Loading batches.....")
     loaded_ims = [cv2.imread(x) for x in im_list]
 
-    im_batches = list(map(prep_image, loaded_ims, [inp_dim for x in range(len(im_list))]))
+    im_batches = list(map(prep_image, loaded_ims, [inp_dim for _ in range(len(im_list))]))
     im_dim_list = [(x.shape[1], x.shape[0]) for x in loaded_ims]
     im_dim_list = torch.FloatTensor(im_dim_list).repeat(1, 2)
 
     leftover = 0
-    if (len(im_dim_list) % batch_size):
+    if len(im_dim_list) % batch_size:
         leftover = 1
 
     if batch_size != 1:
@@ -124,10 +125,11 @@ def main(widget=None):
         im_batches = [torch.cat((im_batches[i * batch_size: min((i + 1) * batch_size,
                                                                 len(im_batches))])) for i in range(num_batches)]
 
-    write = 0
-
     if cuda_present:
         im_dim_list = im_dim_list.cuda()
+
+    output = None
+
     print_info(widget, False, "info", "Finished loading batches....")
     start_det_loop = time.time()
     for i, batch in enumerate(im_batches):
@@ -137,7 +139,7 @@ def main(widget=None):
         if cuda_present:
             batch = batch.cuda()
         with torch.no_grad():
-            prediction = model(Variable(batch), cuda_present)
+            prediction = model(batch, cuda_present)
 
         prediction = write_results(prediction, confidence, num_classes, nms_conf=nms_thesh)
 
@@ -155,9 +157,8 @@ def main(widget=None):
 
         prediction[:, 0] += i * batch_size  # transform the atribute from index in batch to index in imlist
 
-        if not write:  # If we have't initialised output
+        if not output:  # If we have't initialised output
             output = prediction
-            write = 1
         else:
             output = torch.cat((output, prediction))
 
@@ -172,25 +173,25 @@ def main(widget=None):
         if cuda_present:
             torch.cuda.synchronize()
         print_info(widget, False, "info", f"Finished detecting batch no {i}")
-    try:
-        output
-    except NameError:
+
+    if not output:
         print_info(widget, False, 'no_detections', "No detections were made")
         print_info(widget, False, 'finished')
         return
 
-    ## Start rescaling
+    # Start rescaling
     print_info(widget, False, "info", "Output processing....")
     output_rescale = time.time()
     im_dim_list = torch.index_select(im_dim_list, 0, output[:, 0].long())
 
-    scaling_factor = torch.min(416 / im_dim_list, 1)[0].view(-1, 1)
+    scaling_factor = torch.min(inp_dim / im_dim_list, 1)[0].view(-1, 1)
 
     output[:, [1, 3]] -= (inp_dim - scaling_factor * im_dim_list[:, 0].view(-1, 1)) / 2
     output[:, [2, 4]] -= (inp_dim - scaling_factor * im_dim_list[:, 1].view(-1, 1)) / 2
 
     output[:, 1:5] /= scaling_factor
 
+    # set padding space black
     for i in range(output.shape[0]):
         output[i, [1, 3]] = torch.clamp(output[i, [1, 3]], 0.0, im_dim_list[i, 0])
         output[i, [2, 4]] = torch.clamp(output[i, [2, 4]], 0.0, im_dim_list[i, 1])
@@ -225,4 +226,4 @@ def main(widget=None):
 
 
 if __name__ == '__main__':
-    main()
+    detect_images()

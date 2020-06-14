@@ -10,7 +10,7 @@ from PyQt5.QtPrintSupport import QPrinter, QPrintDialog
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QTextEdit, QScrollArea, QSizePolicy, QMenuBar, \
     QFileDialog, QMessageBox, QDialog, QApplication, QMainWindow, QWidget, QSplitter, qApp
 
-from CVModule.DrawImages import ImageHandler
+from VisionPackage.DrawImages import ImageHandler
 
 
 def adjust_scrollbar(scroll_bar, factor):

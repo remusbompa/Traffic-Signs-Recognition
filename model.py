@@ -1,21 +1,6 @@
 from __future__ import division
-
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.autograd import Variable
-import numpy as np
-from util import *
-
-
-def get_test_input():
-    img = cv2.imread("dog-cycle-car.png")
-    img = cv2.resize(img, (416, 416))  # Resize to the input dimension
-    img_ = img[:, :, ::-1].transpose((2, 0, 1))  # BGR -> RGB | H X W C -> C X H X W
-    img_ = img_[np.newaxis, :, :, :] / 255.0  # Add a channel at 0 (for batch) | Normalise
-    img_ = torch.from_numpy(img_).float()  # Convert to float
-    img_ = Variable(img_)  # Convert to Variable
-    return img_
+from torch import nn
+from utilities import *
 
 
 def parse_cfg(cfgfile):
@@ -61,11 +46,11 @@ class DetectionLayer(nn.Module):
         self.anchors = anchors
 
 
-def create_modules(blocks):
+def create_modules(blocks: list):
     net_info = blocks[0]  # Captures the information about the input and pre-processing
     module_list = nn.ModuleList()
     prev_filters = 3
-    output_filters = []
+    output_filters = [1,2]
 
     for index, x in enumerate(blocks[1:]):
         module = nn.Sequential()
@@ -75,13 +60,13 @@ def create_modules(blocks):
         # append to module_list
 
         # If it's a convolutional layer
-        if (x["type"] == "convolutional"):
+        if x["type"] == "convolutional":
             # Get the info about the layer
             activation = x["activation"]
-            try:
+            if "batch_normalize" in x:
                 batch_normalize = int(x["batch_normalize"])
                 bias = False
-            except:
+            else:
                 batch_normalize = 0
                 bias = True
 
@@ -112,20 +97,19 @@ def create_modules(blocks):
 
             # If it's an upsampling layer
             # We use Bilinear2dUpsampling
-        elif (x["type"] == "upsample"):
-            stride = int(x["stride"])
+        elif x["type"] == "upsample":
             upsample = nn.Upsample(scale_factor=2, mode="nearest")
             module.add_module("upsample_{}".format(index), upsample)
 
         # If it is a route layer
-        elif (x["type"] == "route"):
+        elif x["type"] == "route":
             x["layers"] = x["layers"].split(',')
             # Start  of a route
             start = int(x["layers"][0])
             # end, if there exists one.
-            try:
+            if len(x["layers"]) > 1:
                 end = int(x["layers"][1])
-            except:
+            else:
                 end = 0
             # Positive anotation
             if start > 0:
@@ -161,20 +145,23 @@ def create_modules(blocks):
         prev_filters = filters
         output_filters.append(filters)
 
-    return (net_info, module_list)
+    return net_info, module_list
 
 
 class Darknet(nn.Module):
+    header = None
+    seen = None
+
     def __init__(self, cfgfile):
         super(Darknet, self).__init__()
         self.blocks = parse_cfg(cfgfile)
         self.net_info, self.module_list = create_modules(self.blocks)
 
-    def forward(self, x, CUDA):
+    def forward(self, x, cuda):
         modules = self.blocks[1:]
         outputs = {}  # We cache the outputs for the route layer
 
-        write = 0
+        detections = torch.empty((0, 0))
         for i, module in enumerate(modules):
             module_type = (module["type"])
 
@@ -199,7 +186,6 @@ class Darknet(nn.Module):
                     map2 = outputs[i + layers[1]]
                     x = torch.cat((map1, map2), 1)
 
-
             elif module_type == "shortcut":
                 from_ = int(module["from"])
                 x = outputs[i - 1] + outputs[i + from_]
@@ -214,10 +200,9 @@ class Darknet(nn.Module):
 
                 # Transform
                 x = x.data
-                x = predict_transform(x, inp_dim, anchors, num_classes, CUDA)
-                if not write:  # if no collector has been intialised.
+                x = predict_transform(x, inp_dim, anchors, num_classes, cuda)
+                if detections.size(0) == 0:  # if no collector has been intialised.
                     detections = x
-                    write = 1
 
                 else:
                     detections = torch.cat((detections, x), 1)
@@ -250,14 +235,14 @@ class Darknet(nn.Module):
 
             if module_type == "convolutional":
                 model = self.module_list[i]
-                try:
+                if "batch_normalize" in self.blocks[i + 1]:
                     batch_normalize = int(self.blocks[i + 1]["batch_normalize"])
-                except:
+                else:
                     batch_normalize = 0
 
                 conv = model[0]
 
-                if (batch_normalize):
+                if batch_normalize:
                     bn = model[1]
 
                     # Get the number of weights of Batch Norm Layer

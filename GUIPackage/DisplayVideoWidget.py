@@ -5,13 +5,14 @@ from os.path import expanduser
 import cv2
 from PyQt5 import QtGui
 from PyQt5.QtCore import QSize, QDir, QStandardPaths, QFile, QIODevice, QThread, Qt
-from PyQt5.QtGui import QKeySequence, QPainter, QGuiApplication, QImageReader, QImageWriter, QPalette, QTextCursor
+from PyQt5.QtGui import QKeySequence, QPainter, QGuiApplication, QImageReader, QImageWriter, QPalette, QTextCursor, \
+    QPixmap, QColor, QIcon
 from PyQt5.QtPrintSupport import QPrinter, QPrintDialog
 from PyQt5.QtWidgets import QMainWindow, QMenuBar, qApp, QFileDialog, QDialog, QMessageBox, QApplication, QWidget, \
     QSplitter, QVBoxLayout, QLabel, QTextEdit, QScrollArea, QHBoxLayout, QSizePolicy, QProgressBar, QPushButton
 
-from CVModule.DrawImages import ImageHandler
-from GUIModule.WorkerImageDetection import WorkerVideoDetection
+from VisionPackage.DrawImages import ImageHandler, ContourHandler
+from GUIPackage.WorkerImageDetection import WorkerVideoDetection
 from moviepy.editor import VideoFileClip
 
 
@@ -321,7 +322,7 @@ class DisplayVideoWidget(QWidget):
         self.obj.info.connect(self.handle_info)
 
         self.obj.image_ready.connect(self.handle_image_ready)
-
+        self.obj.contour_ready.connect(self.show_contour_on_signal)
         # image_frame handling
         self.image_frame.setBackgroundRole(QPalette.Base)
         self.image_frame.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
@@ -464,8 +465,54 @@ class DisplayVideoWidget(QWidget):
                 text_edit.append(f"Object confidence: {contour.obj_conf}")
                 text_edit.append(f"Class score: {contour.cls_score}")
                 text_edit.append(f"Label: {contour.label}")
-                text_edit.append(f"Color: {contour.color}")
+                text_edit.append(f"Tracking ID: {contour.track_id}")
+                text_edit.append("Color: ")
+                pix_map = QPixmap(20, 20)
+                b, g, r = contour.color
+                pix_map.fill(QColor(r, g, b))
+                color_icon = pix_map.toImage()
+                text_cursor = text_edit.textCursor()
+                text_cursor.movePosition(
+                    QtGui.QTextCursor.NextCell,
+                    QtGui.QTextCursor.MoveAnchor
+                )
+                text_cursor.insertImage(color_icon)
+                # This will hide the cursor
+                blank_cursor = QtGui.QCursor(Qt.BlankCursor)
+                text_edit.setCursor(blank_cursor)
+                text_edit.moveCursor(QtGui.QTextCursor.End)
                 return
+
+    def show_contour_on_signal(self, contour: ContourHandler):
+        text_edit = self.textEdit2
+        text_edit.clear()
+        left, bottom = contour.corner_bl
+        right, top = contour.corner_tr
+        text_edit.append(f"Contour number: {contour.number}")
+        text_edit.append(f"Contour left margin: {left}")
+        text_edit.append(f"Contour right margin: {right}")
+        text_edit.append(f"Contour bottom margin: {bottom}")
+        text_edit.append(f"Contour top margin: {top}")
+        text_edit.append(f"Object confidence: {contour.obj_conf}")
+        text_edit.append(f"Class score: {contour.cls_score}")
+        text_edit.append(f"Label: {contour.label}")
+        text_edit.append(f"Tracking ID: {contour.id_track}")
+
+        text_edit.append("Color: ")
+        pix_map = QPixmap(20, 20)
+        b, g, r = contour.color
+        pix_map.fill(QColor(r, g, b))
+        color_icon = pix_map.toImage()
+        text_cursor = text_edit.textCursor()
+        text_cursor.movePosition(
+            QtGui.QTextCursor.NextCell,
+            QtGui.QTextCursor.MoveAnchor
+        )
+        text_cursor.insertImage(color_icon)
+        # This will hide the cursor
+        blank_cursor = QtGui.QCursor(Qt.BlankCursor)
+        text_edit.setCursor(blank_cursor)
+        text_edit.moveCursor(QtGui.QTextCursor.End)
 
 
 def main():

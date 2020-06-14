@@ -9,10 +9,10 @@ from PyQt5.QtGui import QIcon, QTextBlockFormat, QPixmap, QFont
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog, QTextEdit, \
     QMainWindow, QLineEdit, QLabel, QGridLayout, QHBoxLayout, QProgressBar, QMessageBox, QListWidget, qApp
 
-from GUIModule.ContractQPushButton import ContractQPushButton, ContractQText, SelectQPushButton, SelectQText
-from GUIModule.DisplayImageWidget import ImageViewer
-from GUIModule.VideoGUI import DetectVideoApp
-from GUIModule.WorkerImageDetection import WorkerImageDetection
+from GUIPackage.ContractQPushButton import ContractQPushButton, ContractQText, SelectQPushButton, SelectQText
+from GUIPackage.DisplayImageWidget import ImageViewer
+from GUIPackage.VideoGUI import DetectVideoApp
+from GUIPackage.WorkerImageDetection import WorkerImageDetection
 
 
 def images_processed_single_left_click(item):
@@ -288,11 +288,12 @@ class FileDialog(QWidget):
         self.setWindowIcon(QIcon('../images/Logo.png'))
         layout = QVBoxLayout()
 
-        self.startDir = expanduser("~")
+        self.startDir = os.getcwd()
         # Create images selector
         self.btnIm = QPushButton("Select images to detect")
         self.btnIm.clicked.connect(self.get_images)
         self.textIm = QTextEdit()
+        self.textIm.setReadOnly(True)
         layout.addLayout(SelectQPushButton(self.btnIm))
         layout.addLayout(SelectQText(self.textIm))
         layout.addStretch(1)
@@ -300,6 +301,7 @@ class FileDialog(QWidget):
         self.btnDest = QPushButton("Select destination folder")
         self.btnDest.clicked.connect(self.get_destination)
         self.textDest = QLineEdit()
+        self.textDest.setReadOnly(True)
         layout.addLayout(SelectQPushButton(self.btnDest))
         layout.addLayout(SelectQText(self.textDest))
         layout.addStretch(1)
@@ -307,6 +309,7 @@ class FileDialog(QWidget):
         self.btnW = QPushButton("Select weights file")
         self.btnW.clicked.connect(self.get_weights)
         self.textW = QLineEdit()
+        self.textW.setReadOnly(True)
         layout.addLayout(SelectQPushButton(self.btnW))
         layout.addLayout(SelectQText(self.textW))
         layout.addStretch(1)
@@ -314,6 +317,7 @@ class FileDialog(QWidget):
         self.btnConf = QPushButton("Select Config file")
         self.btnConf.clicked.connect(self.get_config)
         self.textConf = QLineEdit()
+        self.textConf.setReadOnly(True)
         layout.addLayout(SelectQPushButton(self.btnConf))
         layout.addLayout(SelectQText(self.textConf))
         layout.addStretch(1)
@@ -321,6 +325,7 @@ class FileDialog(QWidget):
         self.btnNames = QPushButton("Select Names file")
         self.btnNames.clicked.connect(self.get_names)
         self.textNames = QLineEdit()
+        self.textNames.setReadOnly(True)
         layout.addLayout(SelectQPushButton(self.btnNames))
         layout.addLayout(SelectQText(self.textNames))
         layout.addStretch(1)
@@ -339,8 +344,8 @@ class FileDialog(QWidget):
         self.nmsEdit.setText("0.4")
         self.resoEdit.setText("416")
 
-        self.textIm.setText("../poza_2.png")
-        self.args.images = ["../poza_2.png"]
+        self.textIm.setText("../S1.jpg")
+        self.args.images = ["../S1.jpg"]
         self.textDest.setText("../det")
         self.args.det = "../det"
         self.textW.setText("../weights/Swedish.weights")

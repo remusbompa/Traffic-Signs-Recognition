@@ -1,4 +1,5 @@
 import argparse
+import os
 from os.path import expanduser
 from pathlib import Path
 
@@ -7,8 +8,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLineEdit, QLabel, QGridLayout, \
     QHBoxLayout, QFileDialog, QCheckBox, QMessageBox, qApp
 
-from GUIModule.ContractQPushButton import SelectQPushButton, SelectQText
-from GUIModule.DisplayVideoWidget import VideoViewer
+from GUIPackage.ContractQPushButton import SelectQPushButton, SelectQText
+from GUIPackage.DisplayVideoWidget import VideoViewer
 
 
 def resize_window(main_win: QMainWindow, percent: float = 0.9):
@@ -69,7 +70,7 @@ class FileDialog(QWidget):
         self.setWindowIcon(QIcon('../images/Logo.png'))
         layout = QVBoxLayout()
 
-        self.startDir = expanduser("~")
+        self.startDir = os.getcwd()
         # Create video selector
         self.useWebCam = QCheckBox("Use web cam")
         self.useWebCam.setChecked(False)
@@ -87,10 +88,12 @@ class FileDialog(QWidget):
         layout.addLayout(SelectQPushButton(self.btnIm))
         layout.addLayout(SelectQText(self.textIm))
         layout.addStretch(1)
+        self.textIm.setReadOnly(True)
         # Select destination folder
         self.btn_det = QPushButton("Select destination folder")
         self.btn_det.clicked.connect(self.get_destination)
         self.text_det = QLineEdit()
+        self.text_det.setReadOnly(True)
         layout.addLayout(SelectQPushButton(self.btn_det))
         layout.addLayout(SelectQText(self.text_det))
         layout.addStretch(1)
@@ -98,6 +101,7 @@ class FileDialog(QWidget):
         self.btnW = QPushButton("Select weights file")
         self.btnW.clicked.connect(self.get_weights)
         self.textW = QLineEdit()
+        self.textW.setReadOnly(True)
         layout.addLayout(SelectQPushButton(self.btnW))
         layout.addLayout(SelectQPushButton(self.textW))
         layout.addStretch(1)
@@ -105,6 +109,7 @@ class FileDialog(QWidget):
         self.btnConf = QPushButton("Select Config file")
         self.btnConf.clicked.connect(self.get_config)
         self.textConf = QLineEdit()
+        self.textConf.setReadOnly(True)
         layout.addLayout(SelectQPushButton(self.btnConf))
         layout.addLayout(SelectQText(self.textConf))
         layout.addStretch(1)
@@ -112,6 +117,7 @@ class FileDialog(QWidget):
         self.btnNames = QPushButton("Select Names file")
         self.btnNames.clicked.connect(self.get_names)
         self.textNames = QLineEdit()
+        self.textNames.setReadOnly(True)
         layout.addLayout(SelectQPushButton(self.btnNames))
         layout.addLayout(SelectQText(self.textNames))
         layout.addStretch(1)
@@ -130,8 +136,8 @@ class FileDialog(QWidget):
         self.nmsEdit.setText("0.4")
         self.resEdit.setText("416")
 
-        self.textIm.setText("../driving_Germany.mp4")
-        self.args.video = "../driving_Germany.mp4"
+        self.textIm.setText("../driving_Sweden.mp4")
+        self.args.video = "../driving_Sweden.mp4"
         self.text_det.setText("../det")
         self.args.det = "../det"
         self.textW.setText("../weights/Swedish.weights")
@@ -177,7 +183,7 @@ class FileDialog(QWidget):
         self.setLayout(layout)
 
     def get_video(self):
-        file_names = QFileDialog.getOpenFileNames(self, 'Open Video', self.startDir,
+        file_names = QFileDialog.getOpenFileName(self, 'Open Video', self.startDir,
                                                   'Videos (*.webm *.mpg *.ogg *.mp4 *.avi *.mov)', "",
                                                   QFileDialog.DontUseNativeDialog)
         if file_names[0]:

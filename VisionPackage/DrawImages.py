@@ -92,8 +92,9 @@ class ImageHandler:
         self.crt_no = 1
         self.shape = (imread.shape[1], imread.shape[0])
 
-    def add_contour(self, corner_bl, corner_tr, obj_conf, cls_score, cls, label, color):
-        self.contours.append(ContourHandler(self. crt_no, corner_bl, corner_tr, obj_conf, cls_score, cls, label, color))
+    def add_contour(self, corner_bl, corner_tr, obj_conf, cls_score, cls, label, color, id_track=0):
+        self.contours.append(ContourHandler(self. crt_no, corner_bl, corner_tr, obj_conf, cls_score, cls, label, color,
+                                            id_track))
         self.crt_no += 1
 
     def add_color(self, cls, color):
@@ -104,6 +105,7 @@ class ImageHandler:
 
     def write(self, results, classes):
         for res in results:
+            c0 = int(res[0])
             c1 = (int(res[1]), int(res[2]))
             c2 = (int(res[3]), int(res[4]))
             cls = int(res[-1])
@@ -119,7 +121,7 @@ class ImageHandler:
             label = f"{classes[cls]}"
 
             cv2.rectangle(self.imread, c1, c2, color, 2)
-            self.add_contour(c1, c2, res[5], res[6], res[7], label, color)
+            self.add_contour(c1, c2, res[5], res[6], res[7], label, color, c0)
             # the image wrote on the file will be different than the one in ram
 
             t_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_PLAIN, 1, 1)[0]
@@ -128,12 +130,17 @@ class ImageHandler:
             t2 = (int(c1[0] + 1.5 * t_size[0]), c1[1])
 
             cv2.rectangle(self.imread, t1, t2, color, -1)
-            cv2.putText(self.imread, label, (c1[0], int(c1[1] - 0.5 * t_size[1])),
+            cv2.putText(self.imread, label + f"_{c0}", (c1[0], int(c1[1] - 0.5 * t_size[1])),
                         cv2.FONT_HERSHEY_PLAIN, 1, [225, 255, 255], 1)
+
+    def get_last_contour(self):
+        if len(self.contours) == 0:
+            return None
+        return self.contours[-1]
 
 
 class ContourHandler:
-    def __init__(self, crt_no, corner_bl, corner_tr, obj_conf, cls_score, cls, label, color):
+    def __init__(self, crt_no, corner_bl, corner_tr, obj_conf, cls_score, cls, label, color, id_track=0):
         self.number = crt_no
         self.corner_bl = corner_bl
         self.corner_tr = corner_tr
@@ -142,3 +149,4 @@ class ContourHandler:
         self.cls = cls
         self.label = label
         self.color = color
+        self.id_track = id_track
