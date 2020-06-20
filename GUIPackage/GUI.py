@@ -11,8 +11,12 @@ from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFi
 
 from GUIPackage.ContractQPushButton import ContractQPushButton, ContractQText, SelectQPushButton, SelectQText
 from GUIPackage.DisplayImageWidget import ImageViewer
+from GUIPackage.StatisticsGUI import StatisticsGUI
+from GUIPackage.TrainGUI import TrainGUI
 from GUIPackage.VideoGUI import DetectVideoApp
 from GUIPackage.WorkerImageDetection import WorkerImageDetection
+from ServerPackage.ResultsManager import ResultsManager
+from StoragePackage.DatasetsManager import DataSetsManager
 
 
 def images_processed_single_left_click(item):
@@ -212,8 +216,15 @@ class App(QMainWindow):
         video_win = DetectVideoApp(self)
         video_win.show()
 
+    def start_train_model(self):
+        self.hide()
+        train_win = TrainGUI(self)
+        train_win.show()
+
     def start_image_statistics(self):
-        pass
+        self.hide()
+        train_win = StatisticsGUI(self)
+        train_win.show()
 
 
 class ChooseActionWidget(QWidget):
@@ -242,6 +253,10 @@ class ChooseActionWidget(QWidget):
         self.image_statistics_button = QPushButton("Detection statistics")
         self.image_statistics_button.clicked.connect(parent.start_image_statistics)
         layout.addLayout(ContractQPushButton(self.image_statistics_button))
+        layout.addStretch(1)
+        self.train_model_button = QPushButton("Train model")
+        self.train_model_button.clicked.connect(parent.start_train_model)
+        layout.addLayout(ContractQPushButton(self.train_model_button))
         layout.addStretch(1)
 
         self.setLayout(layout)
@@ -448,8 +463,14 @@ class FileDialog(QWidget):
         self.parent.back_to_parent()
 
 
+def init_resources():
+    DataSetsManager.get_instance()
+    ResultsManager.get_instance()
+
+
 def main():
     app = QApplication([])
+    init_resources()
     ex = App()
     ex.show()
     app.exec_()

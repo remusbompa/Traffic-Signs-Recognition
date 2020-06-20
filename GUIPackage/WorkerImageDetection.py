@@ -33,6 +33,7 @@ class WorkerVideoDetection(QObject):
     def __init__(self, widget):
         QObject.__init__(self)
         self.widget = widget
+        self.tracking = self.widget.parent.tracking
         self.pause = False
         self.pauseCond = QWaitCondition()
         self.pauseMutex = QMutex()
@@ -40,5 +41,5 @@ class WorkerVideoDetection(QObject):
         self.cancel = False
 
     def run(self):
-        detect_video.detect_video(self.widget)
+        detect_video.detect_video(self.widget, self.tracking)
 

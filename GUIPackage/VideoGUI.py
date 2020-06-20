@@ -6,10 +6,12 @@ from pathlib import Path
 from PyQt5.QtCore import QCoreApplication, Qt, QSize
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QPushButton, QTextEdit, QLineEdit, QLabel, QGridLayout, \
-    QHBoxLayout, QFileDialog, QCheckBox, QMessageBox, qApp
+    QHBoxLayout, QFileDialog, QCheckBox, QMessageBox, qApp, QComboBox, QStyledItemDelegate
 
-from GUIPackage.ContractQPushButton import SelectQPushButton, SelectQText
+from GUIPackage.ContractQPushButton import SelectQPushButton, SelectQText, SelectQCombo
 from GUIPackage.DisplayVideoWidget import VideoViewer
+from StoragePackage import DatasetsManager
+from StoragePackage.DatasetsManager import DataSetsManager
 
 
 def resize_window(main_win: QMainWindow, percent: float = 0.9):
@@ -83,10 +85,10 @@ class FileDialog(QWidget):
         self.btnIm = QPushButton("Select video to detect")
         self.btnIm.clicked.connect(self.get_video)
         self.textIm = QTextEdit()
-        layout.addLayout(horizontal_layout)
+        layout.addLayout(horizontal_layout, 1)
         layout.addStretch(1)
-        layout.addLayout(SelectQPushButton(self.btnIm))
-        layout.addLayout(SelectQText(self.textIm))
+        layout.addLayout(SelectQPushButton(self.btnIm),1)
+        layout.addLayout(SelectQText(self.textIm), 2)
         layout.addStretch(1)
         self.textIm.setReadOnly(True)
         # Select destination folder
@@ -94,32 +96,39 @@ class FileDialog(QWidget):
         self.btn_det.clicked.connect(self.get_destination)
         self.text_det = QLineEdit()
         self.text_det.setReadOnly(True)
-        layout.addLayout(SelectQPushButton(self.btn_det))
-        layout.addLayout(SelectQText(self.text_det))
+        layout.addLayout(SelectQPushButton(self.btn_det), 1)
+        layout.addLayout(SelectQText(self.text_det), 1)
+        layout.addStretch(1)
+        # Select data set
+        self.select_ds_label = QLabel("Select dataset")
+        self.select_ds = DataSetsManager.get_data_set_combo()
+        self.select_ds.setObjectName("SelectCombo")
+        self.select_ds.currentTextChanged.connect(self.on_data_set_changed)
+        layout.addLayout(SelectQCombo(self.select_ds_label, self.select_ds), 2)
         layout.addStretch(1)
         # Select weights file
         self.btnW = QPushButton("Select weights file")
         self.btnW.clicked.connect(self.get_weights)
         self.textW = QLineEdit()
         self.textW.setReadOnly(True)
-        layout.addLayout(SelectQPushButton(self.btnW))
-        layout.addLayout(SelectQPushButton(self.textW))
+        layout.addLayout(SelectQPushButton(self.btnW),1)
+        layout.addLayout(SelectQPushButton(self.textW), 1)
         layout.addStretch(1)
         # Select Config file
         self.btnConf = QPushButton("Select Config file")
         self.btnConf.clicked.connect(self.get_config)
         self.textConf = QLineEdit()
         self.textConf.setReadOnly(True)
-        layout.addLayout(SelectQPushButton(self.btnConf))
-        layout.addLayout(SelectQText(self.textConf))
+        layout.addLayout(SelectQPushButton(self.btnConf), 1)
+        layout.addLayout(SelectQText(self.textConf), 1)
         layout.addStretch(1)
         # Select Names file
         self.btnNames = QPushButton("Select Names file")
         self.btnNames.clicked.connect(self.get_names)
         self.textNames = QLineEdit()
         self.textNames.setReadOnly(True)
-        layout.addLayout(SelectQPushButton(self.btnNames))
-        layout.addLayout(SelectQText(self.textNames))
+        layout.addLayout(SelectQPushButton(self.btnNames), 1)
+        layout.addLayout(SelectQText(self.textNames), 1)
         layout.addStretch(1)
         bs_label = QLabel('Batch size')
         conf_label = QLabel('Confidence')
@@ -140,12 +149,8 @@ class FileDialog(QWidget):
         self.args.video = "../driving_Sweden.mp4"
         self.text_det.setText("../det")
         self.args.det = "../det"
-        self.textW.setText("../weights/Swedish.weights")
-        self.args.weights = "../weights/Swedish.weights"
-        self.textConf.setText("../cfg/Swedish.cfg")
-        self.args.cfg = "../cfg/Swedish.cfg"
-        self.textNames.setText("../data/Swedish.names")
-        self.args.names = "../data/Swedish.names"
+        self.on_data_set_changed('Swedish')
+        self.select_ds.setCurrentText('Swedish')
 
         grid = QGridLayout()
         grid.setSpacing(10)
@@ -164,7 +169,28 @@ class FileDialog(QWidget):
         grid.setColumnStretch(1, 1)
         grid.setColumnStretch(2, 2)
 
-        layout.addLayout(grid)
+        layout.addLayout(grid, 5)
+
+        tracking_layout = QHBoxLayout()
+        self.use_tracking = QCheckBox("Use tracking")
+        self.use_tracking.setChecked(True)
+        self.use_tracking_label = QLabel("Use tracking: ")
+        self.use_tracking.stateChanged.connect(self.use_tracking_clicked)
+        tracking_layout.addWidget(self.use_tracking_label)
+        tracking_layout.addWidget(self.use_tracking)
+        tracking_layout.addStretch(1)
+        layout.addLayout(tracking_layout, 1)
+
+        self.tracking = None
+        self.select_tracking_label = QLabel("Select tracking")
+        self.select_tracking = QComboBox()
+        self.select_tracking.setItemDelegate(QStyledItemDelegate())
+        self.select_tracking.setObjectName("SelectCombo")
+        self.select_tracking.addItems(["Sort", "Deep Sort"])
+        self.select_tracking.currentIndexChanged.connect(self.selection_tracking_change)
+        self.select_tracking.itemText(1)
+        layout.addLayout(SelectQCombo(self.select_tracking_label, self.select_tracking), 2)
+
         layout.addStretch(1)
 
         back_button = QPushButton("Back")
@@ -178,14 +204,14 @@ class FileDialog(QWidget):
         back_button.clicked.connect(self.back_detection)
         ok_button.clicked.connect(self.start_detection)
         cancel_button.clicked.connect(cancel_detection)
-        layout.addLayout(hor_box)
+        layout.addLayout(hor_box, 2)
 
         self.setLayout(layout)
 
     def get_video(self):
         file_names = QFileDialog.getOpenFileName(self, 'Open Video', self.startDir,
-                                                  'Videos (*.webm *.mpg *.ogg *.mp4 *.avi *.mov)', "",
-                                                  QFileDialog.DontUseNativeDialog)
+                                                 'Videos (*.webm *.mpg *.ogg *.mp4 *.avi *.mov)', "",
+                                                 QFileDialog.DontUseNativeDialog)
         if file_names[0]:
             self.args.video = file_names[0]
             self.textIm.setText(file_names[0])
@@ -205,6 +231,23 @@ class FileDialog(QWidget):
             self.btnIm.clicked.connect(self.get_video)
             self.btnIm.show()
             self.textIm.show()
+
+    def selection_tracking_change(self, i):
+        if i == 0:
+            self.tracking = "sort"
+        else:
+            self.tracking = "deep_sort"
+
+    def use_tracking_clicked(self, checked):
+        if checked:
+            self.select_tracking.show()
+            self.select_tracking.itemText(1)
+            self.select_tracking_label.show()
+            self.tracking = "deep_sort"
+        else:
+            self.select_tracking.hide()
+            self.select_tracking_label.hide()
+            self.tracking = None
 
     def get_destination(self):
         dir_dest = QFileDialog.getExistingDirectory(self, "Open Directory",
@@ -252,3 +295,13 @@ class FileDialog(QWidget):
 
     def back_detection(self):
         self.parent.back_to_parent()
+
+    def on_data_set_changed(self, text):
+        self.args.weights = f"../weights/{text}.weights"
+        self.textW.setText(self.args.weights)
+
+        self.args.cfg = f"../cfg/{text}.cfg"
+        self.textConf.setText(self.args.cfg)
+
+        self.args.names = f"../data/{text}.names"
+        self.textNames.setText(self.args.names)

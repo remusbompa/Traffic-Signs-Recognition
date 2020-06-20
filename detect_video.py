@@ -2,10 +2,9 @@ import mimetypes
 import os
 import time
 from queue import Queue
-from threading import Thread, Condition
-
+from threading import Thread
 from PyQt5.QtCore import QThread
-
+from DeepSort.deepsort import DeepSort
 from VisionPackage.DrawImages import ImageHandler
 from tracking import Sort
 from utilities import *
@@ -51,7 +50,7 @@ def print_info(widget, error, signal, *msg):
             signal.emit("finished")
 
 
-def detect_video(widget=None, with_tracking=True):
+def detect_video(widget=None, with_tracking=None):
     if not widget:
         args = arg_parse()
     else:
@@ -107,7 +106,7 @@ class ReadFramesThread:
         # used to indicate if the thread should be stopped or not
         self.stream = cv2.VideoCapture(path)
         self.widget = widget
-        self.with_tracking = with_tracking
+        self.tracking = with_tracking
         if not self.stream:
             if type(path) == int:
                 print_info(widget, True, "error", f"Error opening web cam on {path}")
@@ -152,8 +151,12 @@ class ReadFramesThread:
 
         # if tracking selected, initialize sort class
         self.mot_tracking = None
-        if with_tracking:
+        if self.tracking == "sort":
             self.mot_tracking = Sort(max_age=100, min_hits=3)
+        elif self.tracking == "deep_sort":
+            print_info(widget, False, "info", "Loading Deep Sort model ...", -1)
+            self.mot_tracking = DeepSort()
+            print_info(widget, False, "info", "Deep Sort model loaded", -1)
 
     def start(self):
         # start a thread to read frames from the file video stream
@@ -260,33 +263,56 @@ class ReadFramesThread:
                 output = self.model(batch, self.cuda)
 
             for frame_id in range(np.size(output, 0)):
-                frame = output[frame_id].unsqueeze(0)
-                frame = write_results(frame, self.confidence, self.num_classes, nms_conf=self.nms_thesh)
                 nr_frame = self.batch_size * batch_nr + frame_id + 1
                 im_dim = im_dims[frame_id]
-                if self.with_tracking:
+                frame = output[frame_id].unsqueeze(0)
+                frame = write_results(frame, self.confidence, self.num_classes, nms_conf=self.nms_thesh)
+
+                if np.size(frame, 0) > 0:
+                    im_dim = im_dim.repeat(frame.size(0), 1)
+                    scaling_factor = torch.min(416 / im_dim, 1)[0].view(-1, 1)
+
+                    frame[:, [1, 3]] -= (self.inp_dim - scaling_factor * im_dim[:, 0].view(-1, 1)) / 2
+                    frame[:, [2, 4]] -= (self.inp_dim - scaling_factor * im_dim[:, 1].view(-1, 1)) / 2
+
+                    frame[:, 1:5] /= scaling_factor
+
+                    for i in range(frame.shape[0]):
+                        frame[i, [1, 3]] = torch.clamp(frame[i, [1, 3]], 0.0, im_dim[i, 0])
+                        frame[i, [2, 4]] = torch.clamp(frame[i, [2, 4]], 0.0, im_dim[i, 1])
+
+                if self.tracking == "sort":
                     if self.cuda:
                         frame = frame.cpu()
                     frame = self.mot_tracking.update(frame)
                     if self.cuda:
                         frame = torch.from_numpy(frame).cuda()
+                elif self.tracking == "deep_sort":
+                    if self.cuda:
+                        frame = frame.cpu()
+                    tracker, detections_class = self.mot_tracking.update(imread[frame_id], frame)
+                    frame = []
+                    for track in tracker.tracks:
+                        if not track.is_confirmed() or track.time_since_update > 1:
+                            continue
+
+                        bbox = track.to_tlbr()  # Get the corrected/predicted bounding box
+                        id_num = int(track.track_id)  # Get the ID for the particular track.
+
+                        # Draw bbox from tracker.
+                        frame.append(np.concatenate(([id_num + 1], bbox,
+                                                     [track.conf_score, track.cid, track.class_score])).reshape(1, -1))
+                    if len(frame) > 0:
+                        frame = np.concatenate(frame)
+                        if self.cuda:
+                            frame = torch.from_numpy(frame).cuda()
+                    else:
+                        frame = torch.empty((0, 8))
 
                 if np.size(frame, 0) == 0:
                     image_handler = ImageHandler(0, batch_nr, f"frame{nr_frame}", imread[frame_id])
                     self.Q_processed.put(image_handler)
                     continue
-
-                im_dim = im_dim.repeat(frame.size(0), 1)
-                scaling_factor = torch.min(416 / im_dim, 1)[0].view(-1, 1)
-
-                frame[:, [1, 3]] -= (self.inp_dim - scaling_factor * im_dim[:, 0].view(-1, 1)) / 2
-                frame[:, [2, 4]] -= (self.inp_dim - scaling_factor * im_dim[:, 1].view(-1, 1)) / 2
-
-                frame[:, 1:5] /= scaling_factor
-
-                for i in range(frame.shape[0]):
-                    frame[i, [1, 3]] = torch.clamp(frame[i, [1, 3]], 0.0, im_dim[i, 0])
-                    frame[i, [2, 4]] = torch.clamp(frame[i, [2, 4]], 0.0, im_dim[i, 1])
 
                 image_handler = ImageHandler(0, 0, f"frame{nr_frame}", imread[frame_id])
                 image_handler.write(frame, self.classes)

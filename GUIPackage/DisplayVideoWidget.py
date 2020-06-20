@@ -1,12 +1,10 @@
 import os
-import subprocess
 from os.path import expanduser
-
 import cv2
 from PyQt5 import QtGui
 from PyQt5.QtCore import QSize, QDir, QStandardPaths, QFile, QIODevice, QThread, Qt
 from PyQt5.QtGui import QKeySequence, QPainter, QGuiApplication, QImageReader, QImageWriter, QPalette, QTextCursor, \
-    QPixmap, QColor, QIcon
+    QPixmap, QColor
 from PyQt5.QtPrintSupport import QPrinter, QPrintDialog
 from PyQt5.QtWidgets import QMainWindow, QMenuBar, qApp, QFileDialog, QDialog, QMessageBox, QApplication, QWidget, \
     QSplitter, QVBoxLayout, QLabel, QTextEdit, QScrollArea, QHBoxLayout, QSizePolicy, QProgressBar, QPushButton
@@ -33,9 +31,10 @@ def get_length(filename):
 
 class VideoViewer(QMainWindow):
 
-    def __init__(self, title, parent=None):
+    def __init__(self, title, parent = None):
         super(VideoViewer, self).__init__(parent)
         self.parent = parent
+        self.tracking = parent.widget.tracking
         self.title = title
         self.left = 10
         self.top = 10

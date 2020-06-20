@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QHBoxLayout, QWidget
+from PyQt5.QtWidgets import QHBoxLayout, QWidget, QLabel, QComboBox
 
 
 class ContractQPushButton(QHBoxLayout):
@@ -29,3 +29,12 @@ class SelectQText(QHBoxLayout):
         super(SelectQText, self).__init__(parent)
         self.addWidget(text_edit, stretch=2)
         self.addStretch(2)
+
+
+class SelectQCombo(QHBoxLayout):
+    def __init__(self, text_edit: QLabel, combo: QComboBox, parent=None):
+        super(SelectQCombo, self).__init__(parent)
+        text_edit.setObjectName("SelectLabel")
+        self.addWidget(text_edit, stretch=1)
+        self.addWidget(combo, stretch=3)
+        self.addStretch(4)

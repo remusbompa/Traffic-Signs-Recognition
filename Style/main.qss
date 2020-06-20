@@ -77,11 +77,92 @@ QScrollArea {
     color: white;
     background: rgba(255, 255, 0, 0);
 }
-QCheckBox {
-    spacing: 0px;
+
+#StatisticsLayout{
+   background-color: rgba(255, 255, 0, 122);
+   border-radius: 5px;
+   border: 1px solid black;
+   border: 2px groove gray;
 }
 
-QCheckBox::indicator {
-    width: 13px;
-    height: 13px;
+#StatisticsCheckbox{
+   width: 20px;
+   height: 20px;
+}
+
+#StatisticsCheckbox::indicator{
+   width: 20px;
+   height: 20px;
+}
+
+#SelectCombo{
+    min-width: 150px;
+    min-height: 60px;
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    selection-background-color: black;
+    selection-color: yellow;
+    color: black;
+    background-color: rgba(255, 255, 0, 122);
+    border-style: solid;
+    border: 1px solid #1e1e1e;
+    border-radius: 5;
+    padding: 1px 0px 1px 20px;
+}
+
+#SelectCombo:hover
+{
+    border: 1px solid red;
+    color: rgba(255, 255, 0, 122);
+}
+
+#SelectCombo:editable {
+    background: red;
+    color: black;
+}
+
+#SelectCombo:on{
+    padding-top: 0px;
+    padding-left: 0px;
+    color: red;
+    background-color: rgba(255, 255, 0, 122);
+    selection-background-color: #ffaa00;
+}
+
+#SelectCombo:!on
+{
+    color: black;
+    background-color: yellow;
+}
+
+#SelectCombo QAbstractItemView
+{
+    border: 2px solid darkgray;
+    color: black;
+    background-color: rgba(255, 255, 0, 122);
+    min-height: 50px;
+}
+
+#SelectCombo::drop-down
+{
+     color: red;
+ }
+
+#SelectCombo QAbstractItemView::item{
+    border: 2px solid darkgray;
+    color: black;
+    background-color: rgba(255, 255, 0, 122);
+    min-width: 150px;
+    min-height: 60px;
+    font: 22pt;
+}
+
+#SelectLabel {
+    border: 0px solid gray;
+    border-radius: 0px;
+    padding: 0 8px;
+    color: lightblue;
+    background: rgba(255, 255, 0, 122);
+    selection-background-color: darkgray;
+    font: 22pt;
 }
