@@ -1,0 +1,187 @@
+<html><head> 
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <link rel="icon" href="http://www.zemris.fer.hr/~ssegvic/mastif/favicon.ico" type="image/ico">
+  <title>
+  MASTIF: datasets
+  </title>
+</head>
+
+<body>
+<h1>
+  <b>M</b>apping and 
+  <b>A</b>ssessing the
+  <b>S</b>tate of 
+  <b>T</b>raffic 
+  <b>I</b>n<b>F</b>rastructure 
+</h1>
+ 
+  
+  <h2>The MASTIF datasets</h2>
+
+  This page provides the traffic sign datasets 
+  collected during our research project
+  <a href="http://www.zemris.fer.hr/~ssegvic/mastif/index_en.shtml">MASTIF</a>.
+  The datasets may be freely used in academic research.
+  If you find these datasets useful,
+  please consider citing one of the following publications:
+  <ul><li>
+    Sini¹a ©egviæ, Karla Brkiæ, Zoran Kalafatiæ, Axel Pinz.
+    Exploiting temporal and spatial constraints 
+    in traffic sign detection from a moving vehicle. 
+    Machine Vision and Applications. 
+    Accepted for publication.
+  </li><li>
+    Sini¹a ©egviæ, Karla Brkiæ, Zoran Kalafatiæ, Vladimir Stanisavljeviæ, 
+    Marko ©evroviæ, Damir Budimir and Ivan Dadiæ.
+    A computer vision assisted geoinformation inventory 
+    for traffic infrastructure. 
+    ITSC 2010, Madeira, Portugal, September 2010
+    (<a href="http://www.zemris.fer.hr/~ssegvic/mastif/pubs/segvic10itsc.pdf">pdf</a>).
+  </li><li>
+    Igor Bonaèi, Ivan Kusaliæ, Ivan Kovaèek, Zoran Kalafatiæ, Sini¹a ©egviæ.
+    Addressing false alarms and localization inaccuracy 
+    in traffic sign detection and recognition.
+    CVWW, Mitterberg, Austria, January 2011
+    (<a href="http://www.zemris.fer.hr/~ssegvic/pubs/bonaci11cvww.pdf">pdf</a>).
+  </li><li>
+    Karla Brkiæ, Axel Pinz, Sini¹a ©egviæ, Zoran Kalafatiæ.
+    Histogram-Based Description of Local State-Time Appearance. 
+    SCIA, Ystad Saltsjöbad, Sweden May 2011
+    (<a href="http://www.zemris.fer.hr/~ssegvic/mastif/pubs/brkic11scia.pdf">pdf</a>).
+  </li></ul>
+
+  <p>
+  There are three datasets (TS2009, TS2010, and TS2011), 
+  which we name with respect to the year 
+  in which they were annotated.
+  Each sign is annotated 4-5 times 
+  at different distances from the car.
+  The developed machine learned algorithms
+  therefore need to be carefully assessed,
+  in order to avoid having different instances
+  of the same physical sign in 
+  both the training and the evaluation sets.
+
+  </p><p>
+  <img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/Croat_files/annotating.jpeg" alt="" width="1400" height="300">
+
+  </p><p>
+  The dataset TS2009 has been acquired 
+  with an interlaced camera, and
+  the corresponding signs are 
+  often significantly distorted.
+  We have therefore used TS2009 for training
+  in most of our experiments so far.
+  For training our detectors 
+  we have used TS2009 as is, 
+  while our classifiers have been trained
+  on a deinterlaced variant of that dataset.
+
+  </p><p>
+  The three datasets can be downloaded from:
+  </p><ul><li>
+    TS2009 (around 6000 signs): 
+    <ul><li>
+      cropped sign images:
+      <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2009signs.tar.gz">tar.gz</a>
+    </li><li>
+      note that we provide only the cropped sign images 
+      for this dataset in order to save space on the server.
+    </li></ul>
+  </li><li>
+    TS2010 (around 3000 signs): 
+    <ul><li>
+      full source images + annotations:
+      <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2010images.tar.gz">tar.gz</a>
+    </li><li>
+      the annotation information is contained 
+      in the text files stored in the archive
+      with the extension <code>.seq</code>.
+    </li><li>
+      the full annotated video:
+      <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2010video.wmv">wmv</a> +
+      <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2010video.vse">annotation</a>
+    </li></ul>
+  </li><li>
+    TS2011 (around 1000 signs):
+    <ul><li>
+      full source images + annotations:
+      <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2011images.tar.gz">tar.gz</a>
+    </li><li>
+      the annotation information is contained 
+      in the text files stored in the archive
+      with the extension <code>.seq</code>.
+    </li><li>
+      the full annotated videos:
+      <ol><li value="0">
+        <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2011video0.wmv">wmv</a> +
+        <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2011video0.vse">annotation</a>
+      </li><li>
+        <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2011video1.wmv">wmv</a> +
+        <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2011video1.vse">annotation</a>
+      </li><li>
+        <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2011video2.wmv">wmv</a> +
+        <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2011video2.vse">annotation</a>
+      </li><li value="4">
+        <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2011video4.wmv">wmv</a> +
+        <a href="http://www.zemris.fer.hr/~ssegvic/mastif/datasets/TS2011video4.vse">annotation</a>
+      </li></ol>
+    </li></ul>
+  </li></ul>
+
+  <p>
+  Please note that the model images 
+  for each of the five main categories
+  of the Croatian signs (A-E)
+  can be downloaded from:
+  <a href="http://narodne-novine.nn.hr/clanci/sluzbeni/dodatni/314285.htm">A</a>,
+  <a href="http://narodne-novine.nn.hr/clanci/sluzbeni/dodatni/314286.htm">B</a>,
+  <a href="http://narodne-novine.nn.hr/clanci/sluzbeni/dodatni/314287.htm">C</a>,
+  <a href="http://narodne-novine.nn.hr/clanci/sluzbeni/dodatni/314288.htm">D</a>,
+  <a href="http://narodne-novine.nn.hr/clanci/sluzbeni/dodatni/10032.htm">E</a>.
+
+  </p><p>
+  </p><table>
+  <tbody><tr valign="top">
+    <td style="width:70%">
+      The back-end server for storing the datasets 
+      has been kindly provided by the 
+      <a href="http://www.srce.unizg.hr/proizvodi-i-usluge/racunalni-resursi/cloud-virtual-private-server-vps/">VPS</a>
+      and 
+      <a href="http://www.srce.unizg.hr/proizvodi-i-usluge/podatkovne-usluge/gss/">GSS</a>
+      services of the University of Zagreb
+      <a href="http://www.srce.unizg.hr/">University computing centre</a>.
+    </td>
+    <td style="width:15%" align="center">
+      <a href="http://www.srce.unizg.hr/proizvodi-i-usluge/racunalni-resursi/cloud-virtual-private-server-vps/">
+        <img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/Croat_files/logo-cloud.html" style="" alt="Srce VPS" width="80%">
+      </a>
+    </td>
+  </tr>
+  </tbody></table>
+
+
+  <p>
+  For all further questions and comments, 
+  feel free to send an e-mail to 
+  <img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/Croat_files/email.png" style="vertical-align:middle" alt="e-mail address" width="100">.
+</p>
+
+<div id="footer">
+  <p>
+  Created with
+  <a href="http://www.vim.org/">vi</a> and
+  <a href="http://www.nedit.org/">nedit</a>. 
+  Best viewed with
+  <a href="http://www.anybrowser.org/campaign/">any</a>
+  <a href="http://www.w3.org/">browser</a>.
+
+  <!--flastmod file="${DOCUMENT_NAME}"-->
+  Last change: Friday, 09-May-2014 17:58:41 CEST
+</p></div>
+ 
+
+
+
+
+</body></html>

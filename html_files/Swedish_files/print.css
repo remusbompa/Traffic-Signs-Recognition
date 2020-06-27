@@ -1,0 +1,9 @@
+
+html,body{margin:0px;padding:0px;border:0px;background-color:#FFF;width:1060px;}
+.screen,.handheld,.forum-create-link,#head-image,#head-search,#head-lang,#head-adapt,#logged-in,#foot,#menu,#page-lang,.permalink,.printlink{display:none;}
+#head-text{float:left;}
+#head-text h1{font-size:150%;}
+#navbar{clear:left;}
+#logo img.print{float:right;height:40px;width:206px;}
+#middle{clear:both;border-top:2px solid #333;}
+a,a:link,a:visited{text-decoration:none;color:#000;}

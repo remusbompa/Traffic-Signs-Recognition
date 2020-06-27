@@ -1,0 +1,70 @@
+@CHARSET "ISO-8859-1";
+body.mobile div.content-left,body.mobile div.content-right{float:none;}
+html,body.mobile,body.mobile #menu,body.mobile #content,body.mobile div.content-30,body.mobile div.content-50,body.mobile div.content-70{width:100%;}
+body.mobile div.content-left>div.text{margin-right:0px;}
+body.mobile div.content-right>div.text{margin-left:0px;}
+body.mobile #foot .foot-column{width:100%;text-align:center;text-transform:uppercase;line-height:22px;background-color:#000;color:#54d8e0;}
+body.mobile #foot #foot-content{background-color:#000;padding-top:20px;padding-bottom:20px;}
+body.mobile{width:100%;background-color:#000;min-height:100%;}
+body.mobile div#clipping{width:100%;overflow:hidden;background-color:#000;min-height:100%;}
+body.mobile div#contentTop h1{display:inline;line-height:120%;vertical-align:middle;font-size:120%;}
+@media screen and (min-width:320px){
+body.mobile div#contentTop h1{line-height:180%;font-size:200%;}}
+body.mobile div#middle{background-color:#54d8e0;}
+body.mobile #search{font-family:Korolev,arial,helvetica,sans-serif;font-weight:300;text-align:center;text-transform:uppercase;padding-left:0;margin-top:7px;}
+body.mobile #menu>h1,body.mobile #search>h1{font-size:140%;margin-top:7px;}
+body.mobile #search a{color:#000;line-height:55px;padding:20px;font-size:110%;font-weight:300;}
+body.mobile #head-search{width:100%;margin:0;text-align:center;position:static;float:left;}
+body.mobile #head-search form p{margin-bottom:20px;}
+body.mobile #search-string{width:90%;font-size:110%;box-sizing:border-box;-moz-box-sizing:border-box;}
+@media screen and (min-width:320px){
+body.mobile #search-string{height:4ex;padding-left:2ex;padding-right:6ex;border-radius:2ex;}}
+@media screen and (min-width:320px){
+body.mobile #search-submit{border:0;width:6ex;height:4ex;background:transparent;margin-left:-7ex;color:transparent;background-image:url('//www.liu.se/mall11/images/mobile/searchfield-icon.png');background-size:40%;background-repeat:no-repeat;background-position:center center;}}
+body.mobile #menu,body.mobile #search{font-size:150%;}
+body.mobile #menu{margin-top:5px;color:black;}
+body.mobile #menu h2{clear:both;}
+body.mobile #menu a{font-weight:300;}
+body.mobile #menu ul li,body.mobile #menu ul li.menu_heading_first{margin:1px 0px;border:none;font-weight:normal;}
+body.mobile #menu ul li:hover{background-color:inherit;border-bottom:none;}
+body.mobile #menu ul li.empty{background-color:inherit;}
+body.mobile #menu ul li.empty.line{border-bottom:2px solid #FFF;}
+body.mobile #menu ul li.selected{bakground-image:none;background:#fff;border:0;}
+body.mobile #menu li a{display:inline-block;width:100%;}
+body.mobile #menu ul li.menu_heading_first,body.mobile #menu h2.firstmenuitem{background-color:#000;font-size:140%;}
+body.mobile #menu ul li.menu_heading,body.mobile #menu h2{bakground-image:none;background:inherit;border:0;font-weight:normal;font-size:120%;padding-left:0;padding-right:0;}
+body.mobile #menu ul li a{color:#000;}
+body.mobile #menu ul li.menu_heading_first a,body.mobile #menu ul li.menu_heading_first.selected a{color:#FFF;}
+body.mobile #menu ul li a,body.mobile #menu ul li.menu_heading_first a,body.mobile #menu ul li.menu_heading_first.selected a{box-sizing:border-box;-moz-box-sizing:border-box;font-family:inherit;}
+body.mobile #search-other{display:block;}
+body.mobile #contentTop{background-color:#000;text-align:center;height:52px;line-height:54px;}
+body.mobile #contentTop img{float:left;}
+body.mobile #contentTop img,body.mobile .searchSubmitPicture img{height:35px;width:35px;padding:7px;}
+body.mobile #contentTop img:first-child{float:right;}
+body.mobile #content .text table{max-width:100%;overflow:auto;}
+body.mobile #head-text{position:static;width:100%;text-align:center;border-bottom:1px solid #000;padding:3px;}
+body.mobile #head-text h1{color:#000;}
+body.mobile #head-lang{margin-left:0;margin-right:0;}
+body.mobile #head-lang,body.mobile #page-lang{float:left;}
+body.mobile #menu a{display:inline-block;line-height:32px;font-size:100%;padding:10px 0px;}
+body.mobile #navbar{color:#000;font-size:80%;padding-bottom:10px;font-weight:300;margin:0px;}
+body.mobile #navbar,body.mobile #navbar a{color:#000;line-height:10px;}
+body.mobile #edit-page-icons a{padding-right:25px;}
+body.mobile #edit-page-icons{margin-bottom:2ex;}
+body.mobile ul.switchDivPagination li a{margin:0px 4px;}
+body.mobile ul.switchDivPagination li{padding-left:5px;}
+body.mobile a{text-decoration:none;}
+body.mobile #foot a{color:white;font-weight:300;}
+body.mobile #menu{text-align:center;}
+body.mobile #menu img.sign{display:block; margin:5px auto 10px; width:57px; height:33px;}
+body.mobile #navbar,body.mobile #page-lang,body.mobile #head-lang{width:100%;}
+body.mobile #menu ul li.menu_heading_first,body.mobile #menu h2{padding-left:0;}
+body.mobile body.mobile #menu a{box-sizing:border-box;-moz-box-sizing:border-box;}
+body.mobile #menu ul li.selected a{color:black;}
+body.mobile a{text-decoration:none;}
+body.mobile #foot a{color:white;}
+body.mobile #menu ul li.menu_heading{font-size:120%; font-weight:normal; color:#000; text-transform:none;}
+body.mobile #pageTypeLinks{background:#0bb2be;color :white;margin-bottom:0;}
+body.mobile #pageTypeLinks a{color:white;}
+body.full.mobile{width:100%;min-width:100%;}
+body.full.mobile .foot-width-limit{width:100%;padding-left:0px;padding-right:0px;}

@@ -1,0 +1,120 @@
+body {
+    font-family: Tahoma,Verdana,sans-serif;
+    font-size: small;
+    color: rgb(100,100,100);
+    margin: 2em 10% 0 10%;
+    background: rgb(248,248,255);
+    max-width: 70em;
+}
+
+h1 { font-size: large; border-bottom: 1px rgb(200,200,200) solid; text-align: right; margin: 0 0 0.7em 0; padding: 0 0 0.2em 0; }
+h1 sup { font-size: small; position: absolute; }
+
+h2 { margin: 0 0 1em 0; font-size: medium;}
+h3 { margin: 1em 0 0 0; font-size: small;}
+
+li {
+    font-size: small;
+    margin: 0.4em 0 0 0;
+    line-height: 150%
+}
+td {
+    font-size: small;
+}
+
+a { font-weight: bold; text-decoration: none; color: gray; }
+a:visited { font-weight: bold; color: gray; }
+a:hover { font-style: italic; }
+
+
+
+#nav {
+    width: 8em;
+    text-align: right;
+    float: left;
+    padding: 1em 0 0 0;
+}
+
+#nav a { display: block; padding: 0 0 1em 0; font-weight: normal; }
+#nav a:hover { font-style: normal; background: transparent; /* background so that IE does hover effect (?!?!)*/ }
+#nav a span { color: rgb(250,255,252); }
+#nav a:hover span { color: black; }
+
+div.myiconholder {
+  width: 85px;
+  height: 24px;
+  margin: 1em auto 0 auto;
+  border: 0px solid rgb(127,127,127);
+  text-align: right;
+}
+
+
+#content {
+  /*background: lightsteelblue;*/
+  margin: 0 0 0 8em;
+  padding: 1em 0 0 2.5em;
+  border-left: 1px rgb(200,200,200) solid;
+}
+
+div.item {
+  border-bottom: 1px rgb(200,200,200) solid;
+  margin: 0 0 2em 0;
+}
+
+div.item p { margin: 1em 0.2em 0.3em 0; line-height: 1.5; text-align: justify; }
+
+td.mycolicon {
+  width: 50px;
+}
+
+
+#footer {
+  margin: 2em 0 0 0;
+  text-align: center;
+  border-top: 1px rgb(200,200,200) solid;
+  font-size: xx-small;
+}
+
+/* START flowing thumbnail code */
+a.thumb {
+  border: 1px rgb(250,255,252) solid;
+  padding: 10px 5px;
+  margin: 1px 0 0 0;
+  display: table-cell;
+  text-align: center;
+  float: left;
+  width: 140px;
+  font-size: x-small;
+  color: rgb(100,100,100);
+}
+
+a.thumb:hover {
+  border: 1px rgb(200,200,200) solid;
+  font-style: normal;
+  color: black;
+}
+
+a.thumb img {
+  padding: 0;
+  margin: 0;
+  border: none;
+  border: 1px rgb(100,100,100) solid;
+}
+
+a.thumb span {
+  display: block;
+  padding: 0;
+  margin: 5px 1em 0 1em;
+}
+
+/* This is a dummy image container, feel free to delete this */ 
+a.thumb object {
+  width: 100px;
+  height: 75px;
+  border: 1px rgb(127,127,127) solid;
+  background: white;
+  padding: 0;
+  margin: 0 auto;
+  display: block;
+}
+/* END flowing thumbnail code */

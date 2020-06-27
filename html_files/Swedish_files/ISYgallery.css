@@ -1,0 +1,49 @@
+/* CSS template used by user gallery pages */
+
+/* Old template
+div.ISYgallery {
+  float: left;
+  height: 190px;
+  width: 116px;
+  margin: 5px 3px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.5;
+  background: #F6F6F6;
+  border: 1px solid;
+  border-color: #AAA #444 #444 #AAA;
+}
+*/
+
+div.ISYgallery {
+  float: left;
+  height: 188px;
+  width: 114px;
+  margin: 5px 5px;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.5;
+  background-color: #fff;
+  background-image: url(/images/bgramp.png);
+  background-repeat: repeat-x;
+  background-position: left top;
+  border: 2px solid;
+  border-color: #e0e0e0;
+  border-radius: 6px;
+  -moz-border-radius:6px; /* Firefox 3.6 and earlier */
+  box-shadow: 4px 4px 5px #aaa;
+  -moz-box-shadow: 4px 4px 5px #aaa;
+  -webkit-box-shadow: 4px 4px 5px #aaa;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+div.ISYgallery img {
+  margin: 10px 0 4px;
+  height: 128px;
+  border: none;
+}
+
+.clearboth {
+  clear: both;
+}

@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="keywords" content="Verkehrszeichen, Benchmark, erkennung, klassifikation, Bildverarbeitung, adas, Maschinelles Lernen, Fahrerassistenzsysteme, Wettbewerb" lang="de">
+<meta name="keywords" content="Traffic sign, recognition, benchmark, German traffic sign benchmark, road sign, computer vision, driver assistance systems, adas, machine learning, classification, image processing, competition" lang="en-us">
+<meta name="keywords" content="Traffic sign, recognition, benchmark, German traffic sign benchmark, road sign, computer vision, driver assistance systems, adas, machine learning, classification, image processing, competition" lang="en">
+<meta name="robots" content="index, follow">
+<title>German Traffic Sign Benchmarks</title>
+<link type="text/css" href="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/jquery-ui-1.css" rel="stylesheet">	
+<link href="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/style.css" rel="stylesheet" type="text/css">
+<link href="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/jquery.css" rel="stylesheet" type="text/css">
+<script src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/jquery-1.js" type="text/javascript"></script>
+<script type="text/javascript" src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/jquery-ui-1.js"></script>
+<script type="text/javascript" src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/tiny_mce.js"></script>
+<script src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/highcharts.js" type="text/javascript"></script>    
+<script src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/jquery.js" type="text/javascript"></script>    
+
+<!-- *************************-->
+<!-- <script type="text/javascript" src="js/jquery-ui-1.8.6.custom.min.js"></script> -->
+
+<!-- commented out for security reasons (HOUBEN 16.04.2019) -->
+<!---->
+
+<link rel="shortcut icon" href="http://benchmark.ini.rub.de/favicon.ico">
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://benchmark.ini.rub.de/piwik/" : "http://benchmark.ini.rub.de/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/piwik.js" type="text/javascript"></script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://benchmark.ini.rub.de/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tag -->
+</head>
+<body>
+
+<div id="wrapper">
+	<div id="haeder">
+    	<div id="haederbackground">
+		</div>
+	</div>
+    <div id="menuinhalt">
+ 		<div id="navi">
+		<ul id="topnavi" style="padding:0;">
+        <li>
+	    <a href="http://benchmark.ini.rub.de/?section=home&amp;subsection=news">Home</a>
+            <ul id="subnavi">
+            	
+            </ul>
+    	</li>
+        <li class="topnavion">
+        <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=news">GTSRB</a>
+            <ul id="subnavi">
+             <li class="subnavion"><a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=news">News</a></li><li><a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=about">About</a></li><li><a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset">Dataset</a></li><li><a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=results">Results</a></li><li><a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=schedule">Schedule</a></li><li><a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=contact">Contact</a></li>	
+            </ul>
+         </li>
+           <li>
+        <a href="http://benchmark.ini.rub.de/?section=gtsdb&amp;subsection=news">GTSDB</a>
+            <ul id="subnavi">
+             	
+            </ul>
+         </li>
+         </ul>
+         <ul id="topnavi" style="padding:0;float:right;margin-top: 0px;">
+                  	<!-- removed for security reasons (HOUBEN 16.04.2019)
+         <li><a href="?section=login" style="color:red;">Login / Sign Up</a></li>-->
+       </ul><!-- Topnavi ende -->
+      </div> <!-- Menueinhalt ende-->  
+
+</div>
+<div id="content">
+<input type="hidden" id="section" value="gtsrb">
+<input type="hidden" id="subsection" value="news">
+<div class="Pre_News"><center>
+<h1>The German Traffic Sign Recognition Benchmark</h1>
+</center>
+<p>&nbsp;</p>
+<center><img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/0.png" alt="" width="80" height="80"><img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/1.png" alt="" width="80" height="80"><img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/2.png" alt="" width="80" height="80"><img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/3.png" alt="" width="80" height="80"><img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/4.png" alt="" width="80" height="80"><img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/5.png" alt="" width="80" height="80"><img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/12.png" alt="" width="80" height="80"><img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/11.png" alt="" width="80" height="80"><img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/8.png" alt="" width="80" height="80"></center>
+<p>&nbsp;</p>
+<p><strong><em>The German Traffic Sign Benchmark</em></strong> is a multi-class, single-image classification challenge held at the <a href="http://www.ijcnn2011.org/" target="_blank">International Joint Conference on Neural Networks (IJCNN) 2011</a>.
+ We cordially invite researchers from relevant fields to participate: 
+The competition is designed to allow for participation without special 
+domain knowledge. Our benchmark has the following properties:</p>
+<ul type="disc">
+<li>Single-image, multi-class classification problem</li>
+<li>More than 40 classes</li>
+<li>More than 50,000 images in total</li>
+<li>Large, lifelike database</li>
+</ul>
+<p>&nbsp;</p>
+</div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Neural Networks Special Issue: Journal paper about GTSRB dataset and competition in print!</span></h3><i>2012-03-16</i><div><p>The
+ details about the full GTSRB dataset and the results of the final 
+competition that was held at IJCNN 2011 can be found in our paper "<strong>Man vs. Computer: Benchmarking Machine Learning Algorithms for Traffic Sign Recognition</strong>" that was accepted for publication in a Neural Networks Special Issue.</p>
+<p><strong>Please cite this paper when when using or referring to the GTSRB dataset.</strong></p>
+<p>The paper is currently in print, but it is already available as online version here:<br><a href="http://dx.doi.org/10.1016/j.neunet.2012.02.016">http://dx.doi.org/10.1016/j.neunet.2012.02.016</a></p>
+<p>Preliminary citation:</p>
+<p>J. Stallkamp, M. Schlipsing, J. Salmen, C. Igel, Man vs. computer: 
+Benchmarking machine learning algorithms for traffic sign recognition, 
+Neural Networks, Available online 20 February 2012, ISSN 0893-6080, 
+10.1016/j.neunet.2012.02.016. 
+(http://www.sciencedirect.com/science/article/pii/S0893608012000457) 
+Keywords: Traffic sign recognition; Machine learning; Convolutional 
+neural networks; Benchmarking</p>
+<p>BibTeX:</p>
+<p><span style="font-family: courier new,courier;">@article{Stallkamp2012,</span><br><span style="font-family: courier new,courier;">title = "Man vs. computer: Benchmarking machine learning algorithms for traffic sign recognition",</span><br><span style="font-family: courier new,courier;">journal = "Neural Networks",</span><br><span style="font-family: courier new,courier;">volume = "",</span><br><span style="font-family: courier new,courier;">number = "0",</span><br><span style="font-family: courier new,courier;">pages = " - ",</span><br><span style="font-family: courier new,courier;">year = "2012",</span><br><span style="font-family: courier new,courier;">note = "",</span><br><span style="font-family: courier new,courier;">issn = "0893-6080",</span><br><span style="font-family: courier new,courier;">doi = "10.1016/j.neunet.2012.02.016",</span><br><span style="font-family: courier new,courier;">url = "http://www.sciencedirect.com/science/article/pii/S0893608012000457",</span><br><span style="font-family: courier new,courier;">author = "J. Stallkamp and M. Schlipsing and J. Salmen and C. Igel",</span><br><span style="font-family: courier new,courier;">keywords = "Traffic sign recognition",</span><br><span style="font-family: courier new,courier;">keywords = "Machine learning",</span><br><span style="font-family: courier new,courier;">keywords = "Convolutional neural networks",</span><br><span style="font-family: courier new,courier;">keywords = "Benchmarking"</span><br><span style="font-family: courier new,courier;">}</span><br><br>We will publish the updated citation details as soon as the article is published as print version.<br><br><br></p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Another change to ITS Special Issue schedule!</span></h3><i>2011-10-17</i><div><p>The editor-in-chief&nbsp;<em></em>unexpectedly moved our <em></em>special issue&nbsp;to a later issue of <em></em><em>Transactions on Intelligent Transportation Systems</em>. Therefore, the submission schedule was changed accordingly.</p>
+<p><strong>First submission deadline: January 11, 2012</strong><br><strong>Notification of first decision: March 15, 2012</strong><br><strong>Revision submission deadline: May 15, 2012</strong><br><strong>Notification of final decision: August 15, 2012</strong><br><strong>Final manuscript (camera ready) submission deadline: September 1, 2012<br>Publication: Fourth issue 2012 (December)</strong></p>
+<p><br>The PDF version can be found <a href="http://benchmark.ini.rub.de/content/cfp-gtsrb-special-issue.pdf">here</a>.</p>
+<p><br>We apologize for any inconvenience.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">IEEE ITS Special Issue: Deadline extension!</span></h3><i>2011-10-11</i><div><p>The submission deadline for the IEEE ITS Special Issue on <em>"Machine Learning for Traffic Sign Recognition"</em> has been extended.</p>
+<p>This is the <strong>updated schedule</strong>:</p>
+<p><span style="text-decoration: line-through;"><strong>First submission deadline: November 11, 2011</strong> </span><br><span style="text-decoration: line-through;"><strong>Notification of first decision: December 20, 2011 </strong></span><br><span style="text-decoration: line-through;"><strong>Revision submission deadline: January 15, 2012 </strong></span><br><span style="text-decoration: line-through;"><strong>Notification of final decision: February 28, 2012 </strong></span><br><span style="text-decoration: line-through;"><strong>Final manuscript (camera ready) submission deadline: March 10, 2012</strong> </span><br><span style="text-decoration: line-through;"> Publication: Second issue 2012 (June)</span></p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Result analysis tool</span></h3><i>2011-09-26</i><div><p>The result analysis tool that was presented at the conference is now available in the <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset#resultanalysis">dataset section</a>
+ (both as source code and binary). It allows to compare results of 
+different approaches and inspect the incorrectly classified images. The 
+description provides some screenshots to give an idea of its 
+capabilities.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Final test set available</span></h3><i>2011-08-23</i><div><p>The final test set is now available (including ground truth) in the <a href="http://benchmark.ini.rub.de/index.php?section=gtsrb&amp;subsection=dataset">dataset section</a>. There, you will find information which paper you should reference when using the GTSRB dataset.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Congratulations!</span></h3><i>2011-08-03</i><div><p>The
+ final competition stage of GTSRB 2011 is over. We want to thank all 
+participants of the competition (both online and on-site) and attendees 
+of the special session. Futhermore, we want to thank the organizing 
+committee of IJCNN, namely the competition chairs Sven Crone and 
+Isabelle Guyon,&nbsp; for making this competition possible.</p>
+<p>This is the final ranking:</p>
+<table style="text-align: left; width: 650px;" cellspacing="2" cellpadding="2" border="1">
+<tbody>
+<tr>
+<td style="vertical-align: top; font-weight: bold;">Rank</td>
+<td style="vertical-align: top; font-weight: bold;">Team</td>
+<td style="vertical-align: top; font-weight: bold;">Representative</td>
+<td style="vertical-align: top; font-weight: bold;">Method</td>
+<td style="vertical-align: top; font-weight: bold;">Correct recognition rate</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">1</td>
+<td style="vertical-align: top;">IDSIA</td>
+<td style="vertical-align: top;">Dan Ciresan</td>
+<td style="vertical-align: top;">Committee of CNNs</td>
+<td style="vertical-align: top;">99.46 %</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">2</td>
+<td style="vertical-align: top;">INI</td>
+<td style="vertical-align: top;">&nbsp;</td>
+<td style="vertical-align: top;">Human Performance</td>
+<td style="vertical-align: top;">98.84 %</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">3</td>
+<td style="vertical-align: top;">sermanet</td>
+<td style="vertical-align: top;">Pierre Sermanet</td>
+<td style="vertical-align: top;">Multi-Scale CNNs</td>
+<td style="vertical-align: top;">98.31 %</td>
+</tr>
+<tr>
+<td style="vertical-align: top;">4</td>
+<td style="vertical-align: top;">CAOR</td>
+<td style="vertical-align: top;">Fatin Zaklouta</td>
+<td style="vertical-align: top;">Random Forests</td>
+<td style="vertical-align: top;">96.14 %</td>
+</tr>
+</tbody>
+</table>
+<!--
+<p><img style="width: 650px; height: 434px;" title="Winners of GTSRB 2011
+        and organizing teams" src="IMG_4292.JPG" alt="Photo of winners
+        of GTSRB 2011 and organizing teams" /></p>
+<p>Left to right: <a href="http://caor.mines-paristech.fr/">Fatin Zaklouta</a>, Johannes Stallkamp, <a href="http://www.idsia.ch/%7Eciresan/">Dan Ciresan</a>, Jan Salmen, <a href="http://cs.nyu.edu/%7Esermanet/index.html">Pierre Sermanet</a>, Marc Schlipsing.</p>
+-->
+<p><big style="font-style: italic;"><span style="font-weight: bold;">We congratulate all awardees.</span></big></p>
+<p>We will soon publish the final test set and corresponding class IDs.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Remote processing allowed during final session</span></h3><i>2011-07-21</i><div><p>Some
+ participants have processing power requirements that can only be 
+fulfilled to a limited extent at the on-site competition, as it is not 
+feasible to bring anything larger than a laptop. <strong>Therefore, we will allow remote processing.</strong>
+ We are going prepare download links upon request, so that you do not 
+have to rely on the conference wifi network to upload the test set to 
+your computing server. <strong>Please let us know if you plan to make use of this opportunity.</strong> <br> <br> <strong>Please note:</strong> the competition itself remains an on-site event. Completely remote participation will not be possible.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Final training set available</span></h3><i>2011-07-12</i><div><p><strong>The final training set is available.</strong>It
+ contains all data that was published as training and test data during 
+the online competition in January. As before, both images and 
+precalculated features are available.</p>
+<p><strong>This dataset is the official training set of GTSRB: for the final competition session as well as for any subsequent evaluation.</strong> Please note that this dataset <strong>does not contain new data</strong>, but only <strong>reorganizes previously published data</strong>
+ for convenience. The joint data is organized like the training set for 
+the online competition. The files and details about the directory 
+structure can be found in the <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset">dataset section</a>.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Call for papers: "Machine Learning for Traffic Sign Recognition" (IEEE ITS Special Issue)</span></h3><i>2011-07-05</i><div><p>We are happy to announe a Special Issue of <em>IEEE Transactions on Intelligent Transportation Systems</em> on the topic <em>Machine Learning for Traffic Sign Recognition</em>. A PDF version of the CFP is available <a href="http://benchmark.ini.rub.de/content/cfp-gtsrb-special-issue.pdf">here</a>.</p>
+<p><strong>Call for papers<br> ---------------</strong><br> <br> <strong>IEEE Transactions on Intelligent Transportation Systems Special Issue:</strong><br> <br> <strong>Machine Learning for Traffic Sign Recognition</strong><br> <br> Recognition of traffic signs is a challenging real-world problem<br> relevant for intelligent transportation systems. It is a<br> multi-category classification problem with unbalanced class<br> frequencies. Traffic signs show a wide range of variations between<br> classes in terms of color, shape, and the presence of pictograms or<br> text. However, there exist subsets of classes (e.g., speed limit<br> signs) that are very similar to each other. Further, the classifier<br> has to cope with large variations in visual appearances due to<br> illumination changes, partial occlusions, rotations, weather<br> conditions etc.<br> <br> Although first commercial systems have reached the market and several<br> studies on sign recognition have been published, systematic<br> comparisons of different approaches are scarce.<br> <br> The special issue focuses on unbiased evaluation of new and existing<br> methods from computer vision, machine learning, and related fields for<br> traffic sign recognition. Empirical evaluation should be based on<br> freely available benchmark data.<br> <br> The special issue is organized in the context of the German Traffic<br> Sign Recognition Benchmark (GTSRB), a competition at this year's IEEE<br> International Conference on Artificial Neural Networks (IJCNN 2011).<br> The GTSRB data is freely available from <a class="moz-txt-link-freetext">http://benchmark.ini.rub.de</a>,<br> the final test data will be released in August.<br> <br> <br> <strong>Important dates<br> ----------------------</strong><br> Manuscript submissions due: October 15 2011:<br> Notification of acceptance: November 20 2011<br> Revised manuscripts due: December 15 2011<br> Publication: second issue 2012<br> <br> <strong>Submission<br> -----------------</strong><br> Manuscripts should be submitted at<br> <a class="moz-txt-link-freetext" href="http://mc.manuscriptcentral.com/t-its">http://mc.manuscriptcentral.com/t-its</a> by selecting the manuscript type<br> `Special Issue on MLFTSR'.<br> <br> <br> <strong>Special issue editors<br> ----------------------------</strong><br> Johannes Stallkamp, Ruhr-Universität Bochum, Germany<br> Marc Schlipsing, Ruhr-Universität Bochum, Germany<br> Jan Salmen, Ruhr-Universität Bochum, Germany<br> Christian Igel, University of Copenhagen, Denmark<br> <br> <br> <strong>Contact<br> ------------</strong><br> <a class="moz-txt-link-abbreviated" href="mailto:tsr-benchmark@ini.ruhr-uni-bochum.de">tsr-benchmark@ini.ruhr-uni-bochum.de</a></p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Details on final session @ IJCNN</span></h3><i>2011-05-26</i><div><p>The
+ date for the final session is set. It will take place Tuesday, August 
+2, 3:20PM-5:20PM. It will be part of the IJCNN special session "Machine 
+Learning for Traffic Sign Recognition".</p>
+<p>At the beginning of this session, the test data (images and 
+pre-calculated features) will be distributed to everyone who wants to 
+participate. <strong>Participation in the online competition is NOT a requirement to join the final session. Everybody is welcome to compete.</strong></p>
+<p>There will be four oral presentations during which the data can be 
+processed and the results be generated. After the talks, the result 
+files are collected and evaluated by us.</p>
+<p>We will then present results and some analysis and announce the winner(s).</p>
+<p>Some more details and rules:</p>
+<ol>
+<li>Bring you own hardware. Please contact us if this is a problem.</li>
+<li>One submission per team. Use the training and test data published 
+for the online competition to determine your best-performing 
+classifier/parameter set.</li>
+<li>You can use all published images (training/test for online competition) to train your final classifier.</li>
+<li>As the processing runs in parallel to the talks, you have approx. 80 minutes to run your classifier.</li>
+<li>Please make sure that your result file follows the <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset#Resultformat">required format</a> (exactly as many lines as the test set, class ids from 0 to 42, refer to competition website for more details).</li>
+</ol>
+<p>Please do not hesitate to contact us if you have any questions (<a href="mailto:tsr-benchmark@ini.rub.de">tsr-benchmark@ini.rub.de</a>).</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Sorted test set available</span></h3><i>2011-01-26</i><div><p>The test set is now <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset#Downloads">available</a> with the same directory and file structure as the training set, i.e., files are sorted by class and track.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Ground-truth for online test set available</span></h3><i>2011-01-25</i><div><p>The class ids for the (online) test set are now available in the <a href="http://benchmark.ini.rub.de/index.php?section=gtsrb&amp;subsection=dataset#Downloads">download section</a>.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Submissions closed</span></h3><i>2011-01-22</i><div><h3><strong>The submission time is over. No more submissions are possible. Thank you very much for your efforts and participation.</strong></h3>
+<p><br> We just enabled the confusion matrix for your results. You 
+should find a "Details"-button right next to your own results on the <a href="http://benchmark.ini.rub.de/index.php?section=gtsrb&amp;subsection=results">result page</a>
+ when your are logged in. In addition to viewing it online, you can 
+download it as CSV file (link below the confusion matrix). You might 
+need to scroll to the top of the screen to actually see the matrix. 
+Clicking on non-zero entries gives the list of misclassified images. The
+ complete list of misclassified images is available as CSV as well. <br> <em>Note:</em> There are some issues with the confusion matrix display on Google Chrome. Please try a different browser (Firefox, Opera, IE).</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Submission limit</span></h3><i>2011-01-21</i><div><p><strong>The
+ current behaviour of some teams which massively submit results to 
+optimize (and overfit) on the test set forces us to introduce a 
+limitation of 10 (ten) submissions per team. If someone tries to get 
+around this limitation by using different accounts, we reserve the right
+ to disqualify the team. We apologize to all teams for this important 
+change.</strong><br> <br> Furthermore, regarding the overfitting 
+behaviour on the test set, we noticed the need to clarify that the 
+conference registration is awarded to the best-performing teams <strong>under the premise of participation in the final competition during the conference </strong> (but independent of its outcome). <br> <br> Finally, we announce an <strong>important change to the schedule.</strong>
+ We decided to publish the ground truth data for the online test set 
+right after the submission deadline. In addition to this, we will enable
+ more features on the result page on our website which include a 
+confusion matrix and the list of misclassified images. We hope that this
+ decision provides you with some insight into your results that might be
+ valuable for your paper submission.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Test set available and submissions open!</span></h3><i>2011-01-19</i><div><h3><strong><strong>The test set is now available (images and pre-calculated features) in the <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset#Downloads">download section</a>. <br> &nbsp;<br> The site is now open for submissions! Please go to "<a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=Manage">Submissions</a>" to submit your results.<br> <br> Please submit your results before January 21, 2011, 23:59 PST (Pacific Standard Time).<br> &nbsp;<br> If you have any questions, or problems downloading the dataset or submitting your results, <br> please do not hesitate to contact us (<a href="mailto:tsr-benchmark@ini.rub.de">tsr-benchmark@ini.rub.de</a>) so that we can quickly<br> resolve any issues that might come up during this short time frame. </strong></strong></h3></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Test phase and submission details</span></h3><i>2011-01-17</i><div><p>As the submission time window for the competition is coming up, we want to provide you with a few updates.</p>
+<ol>
+<li>We are sorry two inform you that some of the annotation data in the 
+image training set was flawed. However, only the total image size 
+attributes (width/height) had errors, with one or both of them being 1 
+pixel off compared to the provided images. The other attributes are 
+correct. Thanks to Alberto Escalante (INI, Ruhr-Universität Bochum) for 
+pointing this out. You can find corrected annotation data in our <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset#Downloads">download section</a>, either as part of the image archive, or as a standalone archive that only contains the annotations. <br>
+ Furthermore, there were two minor issues with the provided C++ code 
+that prevented successful compilation on non-Windows platforms. Thanks 
+to Søren Hauberg (DIKU, Copenhagen) for pointing this out. The fixed 
+version can be found in the download section as well. We apologize for 
+the inconvenience.</li>
+<li>We just uploaded baseline results based on the provided HOG feature 
+set and a k-nearest neighbor algorithm (Euclidean distance). You can 
+find the results <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=results">here</a>.</li>
+<li>Third, a word on the submission: <strong>The test set will be available on Wednesday, January 19, 2011, at 0:00 h PST (Pacific Standard Time). At the same time, the <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=Manage">result submission site</a> will be opened. </strong><strong>The site will be closed for submissions on Friday, January 21, at 23:59 h PST</strong>. Result submission will not be possible after this date. Please keep in mind that you need to <a href="http://benchmark.ini.rub.de/?section=Login">sign up</a>
+ before you can submit your results. The results are uploaded as a text 
+file as described here. Please note that the file must contain exactly 
+one entry per test image/feature vector. The test set will be available 
+both as images, as well as HOG, Haar and hue histogram features. The 
+test set will contain the same annotations than the training set (except
+ the ClassId). However, <strong>the testset will not contain the track information like the training set</strong> (i.e., 30 consecutive images per traffic sign) but a mixed set of approximately 12,500 single images.</li>
+<li>Last but not least: You are all cordially invited to submit papers 
+to IJCNN 2011 (deadline Feb 1). Your papers will be directed to a 
+special poster session at the main conference dedicated to the 
+competition program. In addition, there will be a workshop after the 
+conference, dedicated to the competitions, where the winners and the 
+best paper authors can present their methods. As results on the final 
+test set will only be available during the conference, you should 
+describe your methodology, results on other datasets, and results in the
+ online part of the challenge. The notification for acceptance is April 
+1st and the <strong>revised paper submission is May 1st</strong>.<br> <br>
+<div><strong><span style="text-decoration: underline;">Instructions for authors:</span></strong></div>
+<div>
+<div style="word-wrap: break-word;">Go to the the submission site and follow the instructions</div>
+<div style="word-wrap: break-word;"><a href="http://www.ijcnn2011.org/submission.php">http://www.ijcnn2011.org/submission.php</a></div>
+<div style="word-wrap: break-word;">In the submission page</div>
+<div style="word-wrap: break-word;"><a href="http://ieee-cis.org/conferences/ijcnn2011/upload.php">http://ieee-cis.org/conferences/ijcnn2011/upload.php</a></div>
+<div style="word-wrap: break-word;">Under "Main Research Topic", select the appropriate section under the competition heading.</div>
+</div>
+<div><span style="color: #000000;"><strong>Deadline: <span class="Apple-style-span">February 1st, 2011</span></strong></span></div>
+<div><span class="Apple-style-span" style="color: #ff0000;"><span style="color: #000000;"><strong>Please respect the deadline</strong></span>. </span>You
+ will have the opportunity to revise your paper and include more details
+ about the challenge results at revision time (deadline for revised 
+papers May 1st).</div>
+</li>
+</ol></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Bug fixes for C++ sample code</span></h3><i>2011-01-04</i><div><p>Two minor issues in the C++ example code that prevented successful compilation on non-Windows platforms have been fixed.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">First baseline results available</span></h3><i>2010-12-23</i><div><p>We uploaded <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=results">baseline results</a> from a linear classifier. The results are based on the provided HOG features.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">More pre-calculated features</span></h3><i>2010-12-07</i><div><p>New sets of pre-calculated features are <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset#Pre-calculated_feature">available</a>: Haar-like features and color histograms in HSV color space (hue values only)<br> <strong>Update:</strong> The broken download links are now fixed. Sorry for the inconvenience.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Python code and LDA baseline code available</span></h3><i>2010-12-06</i><div><p><a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset#CodesnippetsPython">Python code</a> to read the training images and <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset#CodesnippetsCPP">C++ code</a> to train a LDA classifier based on the precalculated features are now available.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Code samples and features available</span></h3><i>2010-12-02</i><div><p>Matlab <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset#CodesnippetsMatlab">code samples</a> and <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset#Pre-calculated_feature">pre-calculated features</a> are now available.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Competition started</span></h3><i>2010-12-01</i><div><p>The competition started! The <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=dataset#Downloads">training data</a> is now available.</p></div></div><div class="News"><h3 style="margin-bottom: 0px;"><span class="caption">Website opened</span></h3><i>2010-11-26</i><div></div></div>    </div>
+<div id="footer">
+Last modified: May 10 2019 14:31:46 | Visitors since 16. September 2010 : 872062 | <a href="http://www.ini.rub.de/research/groups/rtcv/index.html.en">Real-Time Computer Vision</a> | <a href="http://www.ini.rub.de/index.html.en">Institut für Neuroinformatik</a> 
+
+  
+</div>
+    
+
+</div>  <!-- wrapper -->
+<div id="tooltip" class="" style="display: none; top: 836px; left: 83px; right: auto;">
+<h3 style="display: block;"></h3>
+<div id="tooltipbody" class="body" style="display: none;"></div>
+<div class="url" style="display: none;"></div>
+</div>
+<div id="ausgrauen">
+<div style="background-color:
+#FFF; border:4px ridge; width:338px; height:100px; left:50%; top:50%; position: absolute; z-index:1001;margin-left: -169px; margin-top: -50px;">
+<span><center><strong>Please wait while your results are processed</strong></center></span>
+<br>
+<br>
+<center><img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/ajax-loader.gif"></center>
+</div></div> <!-- shadow -->
+
+<script src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSRB_files/own.js" type="text/javascript"></script>
+
+<div id="tooltip" style="display: none;"><h3></h3><div class="body"></div><div class="url"></div></div></body></html>

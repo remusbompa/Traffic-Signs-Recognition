@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="keywords" content="Verkehrszeichen, Benchmark, erkennung, klassifikation, Bildverarbeitung, adas, Maschinelles Lernen, Fahrerassistenzsysteme, Wettbewerb" lang="de">
+<meta name="keywords" content="Traffic sign, recognition, benchmark, German traffic sign benchmark, road sign, computer vision, driver assistance systems, adas, machine learning, classification, image processing, competition" lang="en-us">
+<meta name="keywords" content="Traffic sign, recognition, benchmark, German traffic sign benchmark, road sign, computer vision, driver assistance systems, adas, machine learning, classification, image processing, competition" lang="en">
+<meta name="robots" content="index, follow">
+<title>German Traffic Sign Benchmarks</title>
+<link type="text/css" href="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/jquery-ui-1.css" rel="stylesheet">	
+<link href="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/style.css" rel="stylesheet" type="text/css">
+<link href="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/jquery.css" rel="stylesheet" type="text/css">
+<script src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/jquery-1.js" type="text/javascript"></script>
+<script type="text/javascript" src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/jquery-ui-1.js"></script>
+<script type="text/javascript" src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/tiny_mce.js"></script>
+<script src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/highcharts.js" type="text/javascript"></script>    
+<script src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/jquery.js" type="text/javascript"></script>    
+
+<!-- *************************-->
+<!-- <script type="text/javascript" src="js/jquery-ui-1.8.6.custom.min.js"></script> -->
+
+<!-- commented out for security reasons (HOUBEN 16.04.2019) -->
+<!---->
+
+<link rel="shortcut icon" href="http://benchmark.ini.rub.de/favicon.ico">
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://benchmark.ini.rub.de/piwik/" : "http://benchmark.ini.rub.de/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/piwik.js" type="text/javascript"></script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://benchmark.ini.rub.de/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tag -->
+</head>
+<body>
+
+<div id="wrapper">
+	<div id="haeder">
+    	<div id="haederbackground">
+		</div>
+	</div>
+    <div id="menuinhalt">
+ 		<div id="navi">
+		<ul id="topnavi" style="padding:0;">
+        <li>
+	    <a href="http://benchmark.ini.rub.de/?section=home&amp;subsection=news">Home</a>
+            <ul id="subnavi">
+            	
+            </ul>
+    	</li>
+        <li>
+        <a href="http://benchmark.ini.rub.de/?section=gtsrb&amp;subsection=news">GTSRB</a>
+            <ul id="subnavi">
+             	
+            </ul>
+         </li>
+           <li class="topnavion">
+        <a href="http://benchmark.ini.rub.de/?section=gtsdb&amp;subsection=news">GTSDB</a>
+            <ul id="subnavi">
+             <li><a href="http://benchmark.ini.rub.de/?section=gtsdb&amp;subsection=news">News</a></li><li><a href="http://benchmark.ini.rub.de/?section=gtsdb&amp;subsection=about">about</a></li><li class="subnavion"><a href="http://benchmark.ini.rub.de/?section=gtsdb&amp;subsection=dataset">dataset</a></li><li><a href="http://benchmark.ini.rub.de/?section=gtsdb&amp;subsection=results">results</a></li><li><a href="http://benchmark.ini.rub.de/?section=gtsdb&amp;subsection=schedule">schedule</a></li><li><a href="http://benchmark.ini.rub.de/?section=gtsdb&amp;subsection=contact">contact</a></li>	
+            </ul>
+         </li>
+         </ul>
+         <ul id="topnavi" style="padding:0;float:right;margin-top: 0px;">
+                  	<!-- removed for security reasons (HOUBEN 16.04.2019)
+         <li><a href="?section=login" style="color:red;">Login / Sign Up</a></li>-->
+       </ul><!-- Topnavi ende -->
+      </div> <!-- Menueinhalt ende-->  
+
+</div>
+<div id="content">
+<input type="hidden" id="section" value="gtsdb">
+<input type="hidden" id="subsection" value="dataset">
+
+
+  
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+#apDiv3 {
+	float:right;
+	margin-right:20px;
+	margin-left:20px;
+	margin-top:10px;
+	z-index:1;
+}
+</style>
+    <title></title>
+  
+  
+
+<center>
+<h1>The German Traffic Sign Detection Benchmark</h1>
+</center>
+<p>&nbsp;</p>
+<p><strong><em>The German Traffic Sign Detection Benchmark</em></strong>
+ is a single-image detection assessment for researchers with interest in
+ the field of computer vision, pattern recognition and image-based 
+driver assistance. It is introduced on the IEEE International Joint 
+Conference on Neural Networks 2013. It features ...</p>
+<ul type="disc">
+<li>a single-image detection problem</li>
+<li>900 images (devided in 600 training images and 300 evaluation images)</li>
+<li>division into three categories that suit the properties of various detection approaches with different properties</li>
+<li>an online evaluation system with immediate analysis and ranking of the submitted results</li>
+</ul>
+<p><img style="float: left;" src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/example1.png" alt="" width="218" height="139">&nbsp;&nbsp; <img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/example2.png" alt="" width="217" height="138">&nbsp;&nbsp; <img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/example3.png" alt="" width="211" height="140">&nbsp;&nbsp; <img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/example4.png" alt="" width="219" height="139"></p>
+<p>&nbsp;</p>
+<p><strong><span style="font-size: medium;">Downloads</span></strong></p>
+<p>The GTSDB dataset is available via <a href="https://sid.erda.dk/public/archives/ff17dc924eba88d5d01a807357d6614c/published-archive.html">this link</a>.</p>
+<!--<p>If you want to participate in our competition, please download the test dataset (530 MB) and process the images by your traffic sign detector. 
+For details on the submission procedure, please refer to section "Submission format and regulations".</p>
+<p><strong><span style="font-size: medium;">Download</span></strong></p>
+<p>Feel free to download the <a href="../Dataset_GTSDB/FullIJCNN2013.zip" target="_blank">full data set</a> (1.6 GB)  and use it for your purposes. The download package comprises</p>
+<ul>
+<li>the 900 training images (1360 x 800 pixels) in PPM format</li>
+<li>the image sections containing only the traffic signs</li>
+<li>a file in CSV format containing ground truth</li>
+<li>a ReadMe.txt explainig some details</li>
+</ul>
+
+
+<p>If you want to participate in our competition, please download the <a href="../Dataset_GTSDB/TestIJCNN2013.zip" target="_blank">test dataset</a> (530 MB) and process the images by your traffic sign detector. 
+For details on the submission procedure, please refer to section "Submission format and regulations".</p>
+<p><strong><span style="font-size: medium;">Download</span></strong></p>
+<p>Feel free to download the <a href="../Dataset_GTSDB/FullIJCNN2013.zip" target="_blank">full data set</a> (1.6 GB)  and use it for your purposes. The download package comprises</p>
+<ul>
+<li>the 900 training images (1360 x 800 pixels) in PPM format</li>
+<li>the image sections containing only the traffic signs</li>
+<li>a file in CSV format containing ground truth</li>
+<li>a ReadMe.txt explainig some details</li>
+</ul>
+<p>You can also still download the training and test datasets that were used for the competition (
+<a href="../Dataset_GTSDB/TrainIJCNN2013.zip" target="_blank">training data set</a> (1.1 GB),
+<a href="../Dataset_GTSDB/TestIJCNN2013.zip" target="_blank">test data set</a> (500 MB)
+). Momentarily it is still possible to submit results on the test data set in order to compare your performance to that of other teams. For details on the submission procedure, please refer to section "Submission format and regulations". -->
+<p>&nbsp;</p>
+<p><strong><span style="font-size: medium;">Image format</span></strong></p>
+<ul>
+<li>The images contain zero to six traffic signs. However, even if there
+ is a traffic sign located in the image it may not belong to the 
+competition relevant categories (prohibitive, danger, mandatory).</li>
+<li>Images are stored in <a href="http://en.wikipedia.org/wiki/Netpbm_format">PPM format</a></li>
+<li>The sizes of the traffic signs in the images vary from 16x16 to 128x128</li>
+<li>Traffic signs may appear in every perspective and under every lighting condition</li>
+</ul>
+<p>&nbsp;</p>
+<p><strong><span style="font-size: medium;">Annotation format</span></strong></p>
+<p>Annotations are provided in CSV files. Fields are seperated by a semicolon (;). They contain the following information:</p>
+<ul>
+<li>Filename: Filename of the image the annotations apply for</li>
+<li>Traffic sign's region of interest (ROI) in the image</li>
+<ul>
+<li>leftmost image column of the ROI</li>
+<li>upmost image row of the ROI</li>
+<li>rightmost image column of the ROI</li>
+<li>downmost image row of the ROI</li>
+</ul>
+<li>ID providing the traffic sign's class</li>
+</ul>
+<p>You can download source code that will help you to read and compare 
+the annotation files with your detector's results. For an explanation of
+ the class IDs we refer to the ReadMe.txt in the download package.</p>
+<p>&nbsp;</p>
+<!--<p>The class ID is defined as follows:</p>
+<table border="1">
+<tr>
+<th>Class ID</th><th>Traffic sign</th><th>Category</th>
+</tr>
+<tr>
+<td>0</td><td>speed limit 20</td><td>PROHIBITORY</td>
+</tr>
+</table>-->
+<!--<p>&nbsp;</p>
+<p><strong><span style="font-size: medium;">Submission format and regulations</span></strong></p>
+<p>Similar to the annotation format, the result files that can be submitted during the competition phase (<a href="?section=gtsdb&subsection=schedule">schedule</a>) are supposed to be provided in a CSV file format, seperated by a semicolon (;). The fields are</p>
+<ul>
+<li>Filename with extension (without path) of the file your algorithm has detected a traffic sign</li>
+<li>Detection's region of interest (ROI) in the image</li>
+<ul>
+<li>leftmost image column of the ROI</li>
+<li>upmost image row of the ROI</li>
+<li>rightmost image column of the ROI</li>
+<li>downmost image row of the ROI</li>
+</ul>
+</ul>
+<p>Hence, the result file will contain one line per detection. You can download and use source code with functions to write those result files (<a href="#SNIPPETS">C++, Matlab</a>).</p>
+<p>In the submission section you will be asked to choose a category (prohibitive, danger, mandatory) for your detection results. Please note that any detection of a sign that is not in that category will be counted as a false detection. For submitting the results of your detector you will have to upload a zip file. The zip file should contain the result text files of several runs with different parametrizations. The results are then evaluated and a precision-recall plot is created thereof. The precision-recall plot is always computed with all files you submitted so far. </p>-->
+<p><strong><span style="font-size: medium;"><a name="SNIPPETS" id="SNIPPETS">Code snippets</a></span></strong></p>
+<ul>
+<li><a href="http://benchmark.ini.rub.de/Dataset_GTSDB/GTSDB_CppCode.zip">C++ Code package</a></li>
+<li><a href="http://benchmark.ini.rub.de/Dataset_GTSDB/GTSDB_MatlabCode.zip">Matlab Code package</a> (updated 01/19/2013)</li>
+</ul> 
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+
+    </div>
+<div id="footer">
+Last modified: May 10 2019 14:31:46 | Visitors since 16. September 2010 : 872062 | <a href="http://www.ini.rub.de/research/groups/rtcv/index.html.en">Real-Time Computer Vision</a> | <a href="http://www.ini.rub.de/index.html.en">Institut für Neuroinformatik</a> 
+
+  
+</div>
+    
+
+</div>  <!-- wrapper -->
+<div id="tooltip" class="" style="display: none; top: 836px; left: 83px; right: auto;">
+<h3 style="display: block;"></h3>
+<div id="tooltipbody" class="body" style="display: none;"></div>
+<div class="url" style="display: none;"></div>
+</div>
+<div id="ausgrauen">
+<div style="background-color:
+#FFF; border:4px ridge; width:338px; height:100px; left:50%; top:50%; position: absolute; z-index:1001;margin-left: -169px; margin-top: -50px;">
+<span><center><strong>Please wait while your results are processed</strong></center></span>
+<br>
+<br>
+<center><img src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/ajax-loader.gif"></center>
+</div></div> <!-- shadow -->
+
+<script src="/home/remus/Descărcări/Licenta/my_implementation/html_files/GTSDB_files/own.js" type="text/javascript"></script>
+
+<div id="tooltip" style="display: none;"><h3></h3><div class="body"></div><div class="url"></div></div></body></html>

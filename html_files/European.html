@@ -1,0 +1,132 @@
+<HTML>
+<HEAD>
+<META http-equiv="content-type" content="text/html; charset=UTF-8">
+<TITLE>Classification_of_Traffic_Signs_The_European_Datas-1-3</TITLE>
+<STYLE type="text/css">
+
+.ft0{font: 15px 'Times New Roman';line-height: 15px;}
+.ft1{font: 14px 'Arial';line-height: 17px;}
+.ft2{font: 13px 'Arial';line-height: 15px;}
+.ft3{font: bold 34px 'Arial';color: #004c87;line-height: 39px;}
+.ft4{font: bold 14px 'Arial';line-height: 11px;position: relative; bottom: 14px;}
+.ft5{font: bold 18px 'Arial';line-height: 21px;}
+.ft6{font: 13px 'Arial';line-height: 11px;}
+.ft7{font: 14px 'Arial';margin-left: 1px;line-height: 17px;}
+.ft8{font: 15px 'Arial';line-height: 18px;}
+.ft9{font: bold 16px 'Arial';color: #004c87;line-height: 21px;}
+.ft10{font: 16px 'Arial';line-height: 21px;}
+.ft11{font: bold 18px 'Arial';color: #004c87;line-height: 21px;}
+.ft12{font: 18px 'Arial';line-height: 21px;}
+.ft13{font: bold 23px 'Arial';color: #004c87;line-height: 20px;}
+.ft14{font: 37px 'Arial';line-height: 21px;}
+.ft15{font: 17px 'Arial';line-height: 20px;}
+.ft16{font: 16px 'Arial';line-height: 21px;}
+.ft17{font: 13px 'Times New Roman';line-height: 15px;}
+.ft18{font: 16px 'Times New Roman';line-height: 19px;}
+.ft19{font: 14px 'Times New Roman';line-height: 17px;}
+.ft20{font: 17px 'Arial';margin-left: 8px;line-height: 21px;}
+.ft21{font: 17px 'Arial';line-height: 21px;}
+.ft22{font: 12px 'Arial';line-height: 12px;}
+.ft23{font: 18px 'Arial';margin-left: 8px;line-height: 21px;}
+.ft24{font: 18px 'Arial';margin-left: 5px;line-height: 21px;}
+.ft25{font: bold 17px 'Arial';color: #333333;line-height: 20px;}
+
+</STYLE>
+</HEAD>
+
+<BODY>
+
+<P class="p3 ft3">Classiﬁcation of Trafﬁc Signs: The</P>
+<P class="p4 ft3">European Dataset</P>
+<P class="p5 ft5">CITLALLI GÁMEZ SERNA<SPAN class="ft4">1</SPAN>, YASSINE RUICHEK<SPAN class="ft4">1</SPAN></P>
+<P class="p6 ft1"><SPAN class="ft6">1</SPAN><SPAN class="ft7">Le2i FRE2005, CNRS, Arts et Métiers,University Bourgogne </SPAN><NOBR>Franche-Comté,</NOBR> UTBM, <NOBR>F-90010</NOBR> Belfort, France <NOBR>(e-mail:</NOBR> <NOBR>citlalli.gamez-serna@utbm.fr,</NOBR> yassine.ruichek@utbm.fr)</P>
+<P class="p7 ft8">Corresponding author: Citlalli Gámez Serna <NOBR>(e-mail:</NOBR> <NOBR>citlalli.gamez-serna@utbm.fr).</NOBR></P>
+<P class="p8 ft8">This work was supported by the Mexican National Council of Science and Technology (CONACYT).</P>
+<P class="p9 ft12"><IMG src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAUCAYAAABBECfmAAAAp0lEQVQokWP8////fwYGBoaTx48ysLGxMRgamzLAAAsDAwPDjq2bGb58+QwXhClgYmBgQJG4e+c2nM0IM3bT+jUMbGzsDB7evpiS2AATLgkUyR1bNzPs270TUxLm2nfv3jKcPH4UVRLZtS9fPMd0ELZAoIJr16xcxrBp/RpMSZjgr1+/GA4f3I8qKSgkDBcQFBRCaP0PBZcvXvh/987t/8iACq4lWRIA4R5mrmnGRpoAAAAASUVORK5CYII=" id="p1inl_img2"><SPAN class="ft12"> ABSTRACT </SPAN>Classifying trafﬁc signs is an indispensable task for autonomous driving systems. Depending on the country, trafﬁc signs possess a wide variability in their visual appearance making it harder for classiﬁcation systems to succeed. Either the classiﬁer should be <NOBR>ﬁne-tuned</NOBR> or a bigger collection of images should be used. In this paper we introduce a <NOBR>real-world</NOBR> European dataset for trafﬁc sign classiﬁcation. The Dataset is composed of trafﬁc sings from 6 European countries: Belgium, Croatia, France, Germany, Netherlands and Sweden. It gathers public available datasets and complements French trafﬁc signs with images acquired in Belfort with the equipped university autonomous vehicle. It is composed of more than 80,000 images divided in 164 classes, which at the same time belong to 4 main categories following the Vienna Convention of Road Signs. We analyzed the intra variability of classes and compared the classiﬁcation performance of 5 Convolutional Neural Networks (CNNs) architectures.</P>
+<P class="p10 ft12"><IMG src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAUCAYAAABBECfmAAAAp0lEQVQokWP8////fwYGBoaTx48ysLGxMRgamzLAAAsDAwPDjq2bGb58+QwXhClgYmBgQJG4e+c2nM0IM3bT+jUMbGzsDB7evpiS2AATLgkUyR1bNzPs270TUxLm2nfv3jKcPH4UVRLZtS9fPMd0ELZAoIJr16xcxrBp/RpMSZjgr1+/GA4f3I8qKSgkDBcQFBRCaP0PBZcvXvh/987t/8iACq4lWRIA4R5mrmnGRpoAAAAASUVORK5CYII=" id="p1inl_img3"><SPAN class="ft11"> INDEX TERMS </SPAN>Convolutional neural networks, Dataset, Trafﬁc signs, Trafﬁc sign classiﬁcation.</P>
+
+
+<P class="p11 ft13">I. INTRODUCTION</P>
+<P class="p12 ft12">NOWADAYS, Intelligent Autonomous Vehicles together with Advanced Driver Assistance Systems (ADAS) deal with the problem of trafﬁc sign recognition. It is a challenging <NOBR>real-world</NOBR> computer vision problem due to the different and complex scenarios they are placed into. Some of the hard conditions include: illumination changes, occlu- sions, perspectives, weather conditions, aging and human artifacts to name a few. Therefore and because of the high industrial demand for autonomous vehicles, many studies have been published together with datasets from all over the world <NOBR>[1]–[10].</NOBR> However, the systems are limited to the country and/or certain types of signs (shape, category).</P>
+<P class="p13 ft12">Trafﬁc signs provide crucial visual information in order to understand the proper driving conditions [11]. For example, they inform about speed limits, drivable lanes, obstacles, temporary situations, roadway access, restrictive areas, etc. Reasons why they are designed to be easily detectable, recognizable and interpretable by humans [6]. Standard shapes, colors, pictographs and text are used to deﬁne a meaning.</P>
+<P class="p14 ft12">Nevertheless and besides the efforts to standardize trafﬁc signs [12], there exists inter and intra variability between countries and between classes for speciﬁc trafﬁc signs.</P>
+
+
+<P>
+<IMG SRC="/home/remus/Descărcări/Licenta/my_implementation/html_files/European_files/Figure1.jpg" alt="" width="1000" height="700">
+</P>
+
+<DIV>
+<P class="p4 ft12">FIGURE 1: European Trafﬁc Sign Categories Deﬁnition.</P>
+<P class="p15 ft12">From left to right: main category, subcategories and most common shapes.</P>
+</DIV>
+
+<DIV>
+<P></P>
+<IMG SRC="/home/remus/Descărcări/Licenta/my_implementation/html_files/European_files/Figure2.jpg" alt="" width="1000" height="700"
+    style="position:relative">
+<P></P>
+</DIV>
+
+<DIV>
+<P class="p4 ft12">FIGURE 2: Intraclass variability examples of European trafﬁc signs.</P>
+</DIV>
+
+<DIV>
+<P class="p22 ft12">Netherlands and Sweden).</P>
+<P class="p23 ft12"><SPAN class="ft2"></SPAN><SPAN class="ft20">A comparative study of 5 CNNs architectures trained with our proposed European dataset and the German Trafﬁc Sign Recognition Benchmark (GTSRB) [6].</SPAN></P>
+<P class="p24 ft12">The European dataset is available upon request and the <NOBR>pre-trained</NOBR> models can be found in https://github.com/citlag/ <NOBR>European-Trafﬁc-Sings.</NOBR></P>
+<P class="p25 ft12">The paper is organized as follows: Section 2 presents related work for trafﬁc sign datasets and classiﬁcation. Section 3 provides details about the dataset construction and class deﬁnitions. Section 4 describes the neural networks architectures used for training the datasets to continue with the analysis results in Section 5. Conclusions and future work are presented in Section 6.</P>
+<P class="p26 ft12">II. RELATED WORK</P>
+
+
+<P class="p27 ft12">For example, the inter variability is mostly seen between countries that do not follow a common convention [9] while intra variability is perceptible among places which agreed to follow one. In Europe, the Convention on Road Signs and Signals [12] established the common sizes, shapes and colors to be used but allows each country to choose its own symbols and inscriptions. Fig. 2 illustrates some examples of intra class variability where it can be seen that symbols do not only vary between countries but also inside each of them. Regarding the last issue, Croatia and France (Fig. 2 second row) use 2 symbols for pedestrian crossing sign in Danger category while Belgium has speed limit signs with and without adding the Km inscription. Germany also uses 2 different symbols in the <NOBR>pass-right</NOBR> class which belongs to Mandatory category (Fig. 2 fourth row). At the same time, the background color in some categories can vary as deﬁned in [12]. For example, Croatia uses the two possible colors (yellow and white) for danger and prohibitory signs (Fig. 2, ﬁrst and third rows) while the other countries stick to only one.</P>
+<P class="p28 ft12">As mentioned earlier and due to the importance of trafﬁc sign recognition, the research in this ﬁeld has been popular and several methods that use selected <NOBR>hand-coded</NOBR> features as well as the ones which extract the features automatically have been proposed [13]. Among them, the most effective ones relying on CNNs architectures [6]. However, being able to recognize the same trafﬁc sign in different countries is still a problem that in our knowledge, not many studies have addressed, specially in a continent (Europe) where countries are a few hours apart. In this paper we summarize our contributions to the following:</P>
+<P class="p29 ft12"><SPAN class="ft22"></SPAN><SPAN class="ft12">A standard deﬁnition of 164 European trafﬁc signs classes based on the Vienna Road Trafﬁc Sign Con- vention [12]. The classes belong to 4 main categories and subcategories as seen in Fig. 1.</SPAN></P>
+<P class="p30 ft12"><SPAN class="ft22"></SPAN><SPAN class="ft12">A European trafﬁc sign dataset that deals with intra class variability. It is composed of 82,476 images from 6 countries (Belgium, Croatia, France, Germany,</SPAN></P>
+
+
+<P class="p31 ft12">The ﬁrst work on trafﬁc sign recognition was carried out in Japan in 1984 [14] and since then a broad number of works have been proposed to solve the problem through different techniques [15]. The most common ones are based on Support Vector Machines (SVM) [16], [17], template matching <NOBR>[18]–[20]</NOBR> and recently CNNs.</P>
+<P class="p32 ft12">CNNs surpassed human performance on trafﬁc sign classiﬁcation [6], [15]. However, their architectures differ signiﬁcantly from each other.</P>
+<P class="p28 ft12">Even though trafﬁc sign classiﬁcation has been studied for decades, research works couldn’t be compared until the Ger- man Trafﬁc Sign Recognition Benchmark (GTSRB) [6] and the German Trafﬁc Sign Detection Benchmark (GTSDB)</P>
+<P class="p31 ft12"><SPAN class="ft12">[21]</SPAN><SPAN class="ft24">were proposed. Previously all research solutions have based their results on different public available datasets or on information acquired by their own.</SPAN></P>
+<P class="p32 ft12">The work of Abedin et al. [22] is an example of the formerly mentioned. They proposed the whole pipeline for detection and recognition. The recognition is carried out using SURF descriptors trained by an artiﬁcial neural network (ANN) with signs collected by themselves through video sequences in Bangladesh.</P>
+<P class="p28 ft12">Islam et al. [23] performed classiﬁcation on 10 Malaysian signs through an artiﬁcial neural network with a <NOBR>2-layer</NOBR> <NOBR>feed-forward</NOBR> and a softmax classiﬁer. Each class was com- posed of 100 samples dividing them into <NOBR>70%-15%-15%</NOBR> for train, test and validation sets respectively. The signs were captured on roads and highways during different daytimes and weather conditions. Their dataset was also used by Lau et al. [8] to compare 2 classiﬁcation methods, a Radial Basis Function Neural Network (RBFNN) and a CNN.</P>
+<P class="p28 ft12">Li et al. [24] proposed a convolutional neural network (CNN) to detect and classify U.S speed limit signs [9]. Their network is based on a modiﬁed version of <NOBR>R-CNN</NOBR> [25] for the detection and a <NOBR>Cuda-convnet</NOBR> [26] for the classiﬁcation. They claim to achieve 93.89% mean AUC [24] for 4 classes (No Turn, Speed Limit, Stop and Warning).</P>
+<P class="p28 ft12">In the same manner, Jung et al. [10], collected and clas- siﬁed 6 types of trafﬁc sings in South Korea. The training procedure was performed with <NOBR>LeNet-5</NOBR> CNN architecture<SPAN class="ft12">[27]</SPAN><SPAN class="ft24">predicting correctly 16 trafﬁc signs on the road within an observable range.</SPAN></P>
+<P class="p39 ft12">Yang et al. [16] went beyond all the previously mentioned works, classifying not only the respective trafﬁc sign classes but also their superclass (categories). Their system is based on <NOBR>4-class</NOBR> SVM classiﬁers with RBF kernel using Color HOG features to detect the trafﬁc sign categories. Then, three CNNs are used to perform real time trafﬁc sign recognition. Each CNN contains two convolutional layers followed by <NOBR>sub-sampling</NOBR> layers, plus a <NOBR>fully-connected</NOBR> MLP in the last two layers. Their method was trained and evaluated with the GTSDB [6].</P>
+<P class="p39 ft12">Aghdam et al. [15] designed a CNN architecture inspired by Ciseran et al. [28] and compared their work to 3 other networks <NOBR>[28]–[30]</NOBR> reducing by 65%, 63% and 54% the number of training parameters respectively. Their proposed CNN is trained with the GTSRB [6] and <NOBR>ﬁne-tuned</NOBR> with the Belgium dataset [4], [7] in order to prove that their architecture is not only efﬁcient, but also transferable.</P>
+<P class="p40 ft12">Recent work proposed by Li and Wang [31] manages trafﬁc sign detection and recognition. Their trafﬁc sign recognition CNN uses different asymmetric kernels in order to reduce the number of convolutional operations. Addi- tionally, they fused different spatial information using an inception module by concatenating the output of 2 CNN branches along the channel axis. The CNN model was trained with the GTSRB proving to be effective and robust obtaining 99.66% accuracy.</P>
+<P class="p39 ft12">In our study, we will train different CNNs architectures on the same datasets applying a common data preprocessing step and number of epochs in order to provide a fair comparison of trafﬁc sign recognition approaches.</P>
+<P class="p41 ft12">III. DATASET</P>
+<P class="p42 ft12">The images of our proposed European dataset are composed of public available datasets and of sequences recorded in Belfort, France and surroundings during Spring and Summer from 2014, 2015 and 2018. The sequences are composed of urban and rural environments and cover daytime and sunset conditions. The public datasets are composed of different scenarios (urban, rural, highway) mostly captured during daytime.</P>
+<P class="p43 ft12">A. DATA DEFINITION</P>
+<P class="p44 ft12">In order to standardize trafﬁc signs, a lot of efforts have been made since 1909 to establish a common structure. Yet, in 1968 in Vienna, the United Nations Economic Commission for Europe (UNECE) established the Convention on Road Signs and Signals which entered into force on 1978 [12]. Currently, 62 countries follow it with small variations in colors, pictographs and text.</P>
+<P class="p40 ft12">The proposed dataset is divided into 4 relevant categories and subcategories (see Fig. 1) following the Vienna Con- vention on Road Signs and Signals [12]:</P>
+<P class="p45 ft12"><SPAN class="ft12">1)</SPAN><SPAN class="ft23">Danger warning signs. Warn </SPAN><NOBR>road-users</NOBR> of a danger on the road and inform them of its’ nature.</P>
+</DIV>
+
+<DIV>
+<P></P>
+<IMG SRC="/home/remus/Descărcări/Licenta/my_implementation/html_files/European_files/Figure3.jpg" alt="" width="1000" height="500">
+<P></P>
+</DIV>
+
+<DIV>
+<P class="p46 ft12">FIGURE 3: Examples of French directional signs.</P>
+    </DIV>
+
+<DIV>
+<P class="p47 ft12"><SPAN class="ft12">2)</SPAN><SPAN class="ft23">Regulatory signs. Inform </SPAN><NOBR>road-users</NOBR> of special obli- gations, restrictions or prohibitions with which they must comply.</P>
+<P class="p48 ft12"><SPAN class="ft12">3)</SPAN><SPAN class="ft23">Informative signs. Guide </SPAN><NOBR>road-users</NOBR> while they are traveling or provide them with other information which may be useful.</P>
+<P class="p49 ft12"><SPAN class="ft12">4)</SPAN><SPAN class="ft23">Others. Added class to inform </SPAN><NOBR>road-users</NOBR> about im- portant situations.</P>
+<P class="p50 ft12">Regulatory and informative categories have subcategories that other datasets have considered for deﬁning their trafﬁc signs classes [6], [22]. For example, the German Trafﬁc Sign Recognition Benchmark (GTSRB) divided the trafﬁc signs in 3 categories: 1) Danger, 2) Prohibitory, 3) Mandatory and include Other as a irrelevant category. Categories 2 and 3 belong to the Regulatory category deﬁned in the Vienna Convention.</P>
+<P class="p25 ft12">As we will explain in the following subsection, most of the public available datasets include only Danger or Mandatory signs. In the contrary, our proposed dataset con- siders a complete deﬁnition (including Informative signs) for trafﬁc sign classiﬁcation. The reason behind this, resides on facilitating the tedious task to recognize trafﬁc signs which are not only composed of standard shapes with pictographs, but also to be able to recognize more complex signs for later interpretation. Directional signs are an example of that. They are composed with text and shapes to indicate certain direction (Fig. 3).</P>
+<P class="p51 ft12">At the same time, additional panels provide comple- mentary information to interpret trafﬁc signs correctly. The broad selection of trafﬁc signs resulted in 164 classes shown in Fig. 4.</P>
+<P class="p52 ft12">A CSV ﬁle describing class names together with their categories and subcategories they belong to, is provided upon request together with the respective European dataset. In the following subsections <NOBR>(III-B</NOBR> and <NOBR>III-C),</NOBR> we provide more information about how our proposed dataset was built.</P>
+<P class="p53 ft25">B. DATA COLLECTION - UTBM DATASET</P>
+<P class="p54 ft21">We use the equipped vehicle of the UTBM laboratory to capture several sequences of images around university campus. The vehicle is equipped with multiple sensors: a Bumblebee 3D stereo vision camera mounted on the top, a Real Time Kinematic (RTK) GPS sensor and several Light Detection and Ranging (LIDAR) devices. Data collection</P>
+</DIV>
+
+</BODY>
+</HTML>
