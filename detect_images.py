@@ -128,7 +128,7 @@ def detect_images(widget=None):
     if cuda_present:
         im_dim_list = im_dim_list.cuda()
 
-    output = None
+    output = torch.empty((0, 0))
 
     print_info(widget, False, "info", "Finished loading batches....")
     start_det_loop = time.time()
@@ -157,7 +157,7 @@ def detect_images(widget=None):
 
         prediction[:, 0] += i * batch_size  # transform the atribute from index in batch to index in imlist
 
-        if not output:  # If we have't initialised output
+        if np.size(output, 0) == 0:  # If we have't initialised output
             output = prediction
         else:
             output = torch.cat((output, prediction))
@@ -174,7 +174,7 @@ def detect_images(widget=None):
             torch.cuda.synchronize()
         print_info(widget, False, "info", f"Finished detecting batch no {i}")
 
-    if not output:
+    if np.size(output, 0) == 0:
         print_info(widget, False, 'no_detections', "No detections were made")
         print_info(widget, False, 'finished')
         return

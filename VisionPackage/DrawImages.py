@@ -67,6 +67,9 @@ class ImagesHandler:
             cv2.putText(image.write_image, label, (c1[0], int(c1[1] - 0.5 * t_size[1])),
                         cv2.FONT_HERSHEY_PLAIN, 1, [225, 255, 255], 1)
 
+            t_size = cv2.getTextSize(str(image.crt_no-1), cv2.FONT_HERSHEY_PLAIN, 1, 1)[0]
+            t1 = (c1[0], int(c1[1] - 1.5 * t_size[1]))
+            t2 = (int(c1[0] + 1.5 * t_size[0]), c1[1])
             cv2.rectangle(image.imread, t1, t2, color, -1)
             cv2.putText(image.imread, str(image.crt_no-1), (c1[0], int(c1[1] - 0.5 * t_size[1])),
                         cv2.FONT_HERSHEY_PLAIN, 1, [225, 255, 255], 1)
@@ -78,7 +81,7 @@ class ImagesHandler:
 class ImageHandler:
     dict_colors = {}
 
-    def __init__(self, image_ind, batch_no, path, imread):
+    def __init__(self, image_ind, batch_no, path, imread, tracking=False):
         self.contours = []
         self.image_ind = image_ind
         self.batch_no = batch_no
@@ -91,9 +94,10 @@ class ImageHandler:
         self.batch_info = None
         self.crt_no = 1
         self.shape = (imread.shape[1], imread.shape[0])
+        self.tracking = tracking
 
     def add_contour(self, corner_bl, corner_tr, obj_conf, cls_score, cls, label, color, id_track=0):
-        self.contours.append(ContourHandler(self. crt_no, corner_bl, corner_tr, obj_conf, cls_score, cls, label, color,
+        self.contours.append(ContourHandler(self.crt_no, corner_bl, corner_tr, obj_conf, cls_score, cls, label, color,
                                             id_track))
         self.crt_no += 1
 
@@ -130,8 +134,12 @@ class ImageHandler:
             t2 = (int(c1[0] + 1.5 * t_size[0]), c1[1])
 
             cv2.rectangle(self.imread, t1, t2, color, -1)
-            cv2.putText(self.imread, label + f"_{c0}", (c1[0], int(c1[1] - 0.5 * t_size[1])),
-                        cv2.FONT_HERSHEY_PLAIN, 1, [225, 255, 255], 1)
+            if self.tracking:
+                cv2.putText(self.imread, label + f"_{c0}", (c1[0], int(c1[1] - 0.5 * t_size[1])),
+                            cv2.FONT_HERSHEY_PLAIN, 1, [225, 255, 255], 1)
+            else:
+                cv2.putText(self.imread, label, (c1[0], int(c1[1] - 0.5 * t_size[1])),
+                            cv2.FONT_HERSHEY_PLAIN, 1, [225, 255, 255], 1)
 
     def get_last_contour(self):
         if len(self.contours) == 0:

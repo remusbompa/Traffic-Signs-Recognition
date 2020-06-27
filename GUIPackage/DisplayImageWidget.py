@@ -5,7 +5,8 @@ import cv2
 from PyQt5 import QtGui
 
 from PyQt5.QtCore import Qt, QDir, QStandardPaths, QFile, QIODevice, QSize
-from PyQt5.QtGui import QPalette, QGuiApplication, QPainter, QKeySequence, QImageReader, QImageWriter, QTextCursor
+from PyQt5.QtGui import QPalette, QGuiApplication, QPainter, QKeySequence, QImageReader, QImageWriter, QTextCursor, \
+    QPixmap, QColor
 from PyQt5.QtPrintSupport import QPrinter, QPrintDialog
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QLabel, QTextEdit, QScrollArea, QSizePolicy, QMenuBar, \
     QFileDialog, QMessageBox, QDialog, QApplication, QMainWindow, QWidget, QSplitter, qApp
@@ -301,10 +302,17 @@ class DisplayImageWidget(QWidget):
             cursor.movePosition(QTextCursor.NextCell)
         for contour in contours:
             row = [contour.number, contour.corner_bl, contour.corner_tr, contour.obj_conf, contour.cls_score,
-                   contour.cls, contour.label, contour.color]
+                   contour.cls, contour.label]
             for value in row:
                 cursor.insertText(f"{value}")
                 cursor.movePosition(QTextCursor.NextCell)
+            pix_map = QPixmap(20, 20)
+            b, g, r = contour.color
+            pix_map.fill(QColor(r, g, b))
+            color_icon = pix_map.toImage()
+
+            cursor.insertImage(color_icon)
+            cursor.movePosition(QTextCursor.NextCell)
 
     def show_contour_info(self, event):
         x = event.pos().x()
@@ -314,7 +322,8 @@ class DisplayImageWidget(QWidget):
         y *= self.img_handler.shape[1] / qsize.height()
         text_edit = self.textEdit2
 
-        text_edit.setText(f"x:{x} y:{y}")
+        text_edit.clear()
+        text_edit.append(f"x:{x} y:{y}")
         for contour in self.img_handler.contours:
             left, bottom = contour.corner_bl
             right, top = contour.corner_tr
@@ -327,8 +336,22 @@ class DisplayImageWidget(QWidget):
                 text_edit.append(f"Contour top margin: {top}")
                 text_edit.append(f"Object confidence: {contour.obj_conf}")
                 text_edit.append(f"Class score: {contour.cls_score}")
-                text_edit.append(f"Label: {contour.label}")
-                text_edit.append(f"Color: {contour.color}")
+                text_edit.append(f"Label: <b>{contour.label}</b>")
+                text_edit.append("Color: ")
+                pix_map = QPixmap(20, 20)
+                b, g, r = contour.color
+                pix_map.fill(QColor(r, g, b))
+                color_icon = pix_map.toImage()
+                text_cursor = text_edit.textCursor()
+                text_cursor.movePosition(
+                    QtGui.QTextCursor.NextCell,
+                    QtGui.QTextCursor.MoveAnchor
+                )
+                text_cursor.insertImage(color_icon)
+                # This will hide the cursor
+                blank_cursor = QtGui.QCursor(Qt.BlankCursor)
+                text_edit.setCursor(blank_cursor)
+                text_edit.moveCursor(QtGui.QTextCursor.End)
                 return
         text_edit.append("No detection!")
 

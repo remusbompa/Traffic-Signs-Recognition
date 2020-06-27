@@ -273,7 +273,7 @@ class FileDialog(QWidget):
 
         command = " ".join(["./darknet", "detector", "train"]
                            + self.ds.parameters + ["-map", "-dont_show"] + gpus)
-        ssh_arg = ["-c", f"sshpass -p stud_remus ssh remus@141.85.232.73 ''cd /opt/remus/darknet_European/; {command}'"]
+        ssh_arg = ["-c", f"sshpass -p stud_remus ssh remus@141.85.232.73 'cd /opt/remus/darknet_European/; {command}'"]
         self.process_train.setArguments(ssh_arg)
         self.process_train.readyReadStandardOutput.connect(self.on_train_ready)
         self.process_train.finished.connect(self.on_train_finished)

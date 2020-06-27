@@ -230,6 +230,7 @@ class FileDialog(QWidget):
             x_vals = names
             y_vals = res
         #horizontal bar
+        chart_view = None
         if self.select_chart.currentIndex() == 0:
             chart = QChart(flags=Qt.WindowFlags())
             series = QHorizontalBarSeries()
@@ -239,7 +240,10 @@ class FileDialog(QWidget):
                 set0.append(y_vals[i])
                 series.append(set0)
             chart.addSeries(series)
-            chart.setTitle(f"Comparison by {self.select_metric_inter.currentText()}")
+            if text[:5] == "Inter":
+                chart.setTitle(f"Comparison by {self.select_metric_inter.currentText()}")
+            else:
+                chart.setTitle(f"Comparison by {self.select_metric_intra.currentText()}")
             chart.setAnimationOptions(QChart.SeriesAnimations)
 
             chart_view = QChartView(chart)
@@ -268,7 +272,10 @@ class FileDialog(QWidget):
                 set0.append(y_vals[i])
                 series.append(set0)
             chart.addSeries(series)
-            chart.setTitle(f"Comparison by {self.select_metric_inter.currentText()}")
+            if text[:5] == "Inter":
+                chart.setTitle(f"Comparison by {self.select_metric_inter.currentText()}")
+            else:
+                chart.setTitle(f"Comparison by {self.select_metric_intra.currentText()}")
             chart.setAnimationOptions(QChart.SeriesAnimations)
 
             chart_view = QChartView(chart)
@@ -293,7 +300,10 @@ class FileDialog(QWidget):
             for i in range(len(x_vals)):
                 series.append(x_vals[i], y_vals[i])
             chart.addSeries(series)
-            chart.setTitle(f"Comparison by {self.select_metric_inter.currentText()}")
+            if text[:5] == "Inter":
+                chart.setTitle(f"Comparison by {self.select_metric_inter.currentText()}")
+            else:
+                chart.setTitle(f"Comparison by {self.select_metric_intra.currentText()}")
             chart.setAnimationOptions(QChart.SeriesAnimations)
             chart.legend().setAlignment(Qt.AlignBottom)
             # chart.legend().setFont(QFont("Arial", 12))
@@ -305,3 +315,6 @@ class FileDialog(QWidget):
             chart_view.setRenderHint(QPainter.Antialiasing)
             chart_view.setBackgroundBrush(QColor(0, 0, 0, 255))
             chart.setBackgroundBrush(QColor(255, 255, 0, 255))
+
+        chart_view.setRubberBand(QChartView.HorizontalRubberBand)
+        chart_view.setRubberBand(QChartView.VerticalRubberBand)

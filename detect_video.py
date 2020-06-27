@@ -66,8 +66,6 @@ def detect_video(widget=None, with_tracking=None):
             if mime_start != 'video':
                 print_info(widget, True, "error", "No video file with the name {}".format(args.video))
 
-    if not os.path.exists(args.det):
-        os.makedirs(args.det)
     # Set up the neural network
     # Detection phase
     video_file = args.video  # or path to the video file.
@@ -126,19 +124,54 @@ class ReadFramesThread:
         self.batch_size = int(args.bs)
         self.names_file = args.names
         self.confidence = float(args.confidence)
-        self.nms_thesh = float(args.nms_thresh)
-        self.batch_size = int(args.bs)
-        self.names_file = args.names
+        self.nms_thresh = float(args.nms_thresh)
+        self.is_classifier = args.is_classifier
         self.classes = load_classes(self.names_file)
         self.num_classes = len(self.classes)
 
-        print_info(widget, False, "info", "Loading network.....", -1)
-        self.model = Darknet(args.cfg)
-        self.model.load_weights(args.weights)
-        print_info(widget, False, "info", "Network successfully loaded", 0)
+        self.model = None
+        self.model_classifier = None
+        if self.is_classifier:
+            print_info(widget, False, "info", "Loading network for detection.....", -1)
+            self.model = Darknet(args.classifier_cfg)
+            self.model.load_weights(args.classifier_weights)
+            print_info(widget, False, "info", "Network for detection successfully loaded", 0)
 
-        self.model.net_info["height"] = args.reso
-        self.inp_dim = int(self.model.net_info["height"])
+            print_info(widget, False, "info", "Loading network for classification.....", -1)
+            self.model_classifier = Darknet(args.cfg)
+            self.model_classifier.load_weights(args.weights)
+            print_info(widget, False, "info", "Network for classification successfully loaded", 0)
+
+            self.model_classifier.net_info["height"] = args.reso
+            self.inp_dim = int(self.model_classifier.net_info["height"])
+            # If there's a GPU availible, put the model on GPU
+            self.cuda = torch.cuda.is_available()
+            if self.cuda:
+                self.model_classifier.cuda()
+            # Set the model in evaluation mode
+            self.model_classifier.eval()
+
+            self.classifier_confidence = self.confidence
+            self.classifier_nms_thesh = self.nms_thresh
+            self.classifier_classes = self.classes
+            self.classifier_num_classes = self.num_classes
+            self.classifier_names_file = self.names_file
+            self.classifier_inp_dim = self.inp_dim
+
+            self.inp_dim = args.classifier_inp_dim
+            self.confidence = args.classifier_confidence
+            self.nms_thresh = args.classifier_nms_thresh
+            self.names_file = args.classifier_names
+            self.classes = load_classes(self.names_file)
+            self.num_classes = len(self.classes)
+
+        else:
+            print_info(widget, False, "info", "Loading network.....", -1)
+            self.model = Darknet(args.cfg)
+            self.model.load_weights(args.weights)
+            print_info(widget, False, "info", "Network successfully loaded", 0)
+
+        self.model.net_info["height"] = self.inp_dim
         assert self.inp_dim % 32 == 0
         assert self.inp_dim > 32
 
@@ -152,7 +185,7 @@ class ReadFramesThread:
         # if tracking selected, initialize sort class
         self.mot_tracking = None
         if self.tracking == "sort":
-            self.mot_tracking = Sort(max_age=100, min_hits=3)
+            self.mot_tracking = Sort(max_age=30, min_hits=3)
         elif self.tracking == "deep_sort":
             print_info(widget, False, "info", "Loading Deep Sort model ...", -1)
             self.mot_tracking = DeepSort()
@@ -266,7 +299,7 @@ class ReadFramesThread:
                 nr_frame = self.batch_size * batch_nr + frame_id + 1
                 im_dim = im_dims[frame_id]
                 frame = output[frame_id].unsqueeze(0)
-                frame = write_results(frame, self.confidence, self.num_classes, nms_conf=self.nms_thesh)
+                frame = write_results(frame, self.confidence, self.num_classes, nms_conf=self.nms_thresh)
 
                 if np.size(frame, 0) > 0:
                     im_dim = im_dim.repeat(frame.size(0), 1)
@@ -280,6 +313,9 @@ class ReadFramesThread:
                     for i in range(frame.shape[0]):
                         frame[i, [1, 3]] = torch.clamp(frame[i, [1, 3]], 0.0, im_dim[i, 0])
                         frame[i, [2, 4]] = torch.clamp(frame[i, [2, 4]], 0.0, im_dim[i, 1])
+
+                    if self.is_classifier:
+                        frame = self.apply_classifier_model(imread[frame_id], frame)
 
                 if self.tracking == "sort":
                     if self.cuda:
@@ -301,7 +337,7 @@ class ReadFramesThread:
 
                         # Draw bbox from tracker.
                         frame.append(np.concatenate(([id_num + 1], bbox,
-                                                     [track.conf_score, track.cid, track.class_score])).reshape(1, -1))
+                                                     [track.conf_score, track.class_score, track.cid])).reshape(1, -1))
                     if len(frame) > 0:
                         frame = np.concatenate(frame)
                         if self.cuda:
@@ -310,12 +346,17 @@ class ReadFramesThread:
                         frame = torch.empty((0, 8))
 
                 if np.size(frame, 0) == 0:
-                    image_handler = ImageHandler(0, batch_nr, f"frame{nr_frame}", imread[frame_id])
+                    image_handler = ImageHandler(nr_frame, batch_nr, f"frame{nr_frame}",
+                                                 imread[frame_id], self.tracking)
                     self.Q_processed.put(image_handler)
                     continue
 
-                image_handler = ImageHandler(0, 0, f"frame{nr_frame}", imread[frame_id])
-                image_handler.write(frame, self.classes)
+                image_handler = ImageHandler(nr_frame, batch_nr, f"frame{nr_frame}",
+                                             imread[frame_id], self.tracking)
+                if self.is_classifier:
+                    image_handler.write(frame, self.classifier_classes)
+                else:
+                    image_handler.write(frame, self.classes)
                 self.Q_processed.put(image_handler)
 
     def get_image(self):
@@ -323,6 +364,49 @@ class ReadFramesThread:
 
     def has_images(self):
         return not self.Q_processed.empty()
+
+    def apply_classifier_model(self, imread, frame):
+        # get crops from detections in frame
+        crops = torch.empty((0, 0))
+        detections = frame[:, 1:5]
+        for d in detections:
+            for i in range(len(d)):
+                if d[i] < 0:
+                    d[i] = 0
+            img_h, img_w, img_ch = imread.shape
+            xmin, ymin, xmax, ymax = d
+            if xmin > img_w:
+                xmin = img_w
+            if ymin > img_h:
+                ymin = img_h
+            ymin = abs(int(ymin))
+            ymax = abs(int(ymax))
+            xmin = abs(int(xmin))
+            xmax = abs(int(xmax))
+            try:
+                crop = imread[ymin:ymax, xmin:xmax, :]
+                crop = prep_image(crop, self.classifier_inp_dim)
+                if np.size(crops, 0) == 0:
+                    crops = crop
+                else:
+                    crops = torch.cat((crops, crop))
+            except:
+                continue
+        if self.cuda:
+            crops = crops.cuda()
+        with torch.no_grad():
+            output = self.model_classifier(crops, self.cuda)
+        for frame_id in range(np.size(output, 0)):
+            new_det = output[frame_id].unsqueeze(0)
+            new_det = write_results(new_det, self.classifier_confidence, self.classifier_num_classes,
+                                    nms_conf=self.classifier_nms_thesh)
+            if np.size(new_det, 0) > 0:
+                index = torch.argmax(new_det[:, 6])
+                frame[frame_id, 6:8] = new_det[index, 6:8]
+            else:
+                frame[frame_id, 6] = -1
+        frame = frame[frame[:, 6] >= 0]
+        return frame
 
 
 if __name__ == '__main__':

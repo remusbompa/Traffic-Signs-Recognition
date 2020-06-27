@@ -1,15 +1,13 @@
 import argparse
 import os
-from os.path import expanduser
 from pathlib import Path
 
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import QCoreApplication, QThread, Qt, QSize, QFile
+from PyQt5.QtCore import QCoreApplication, QThread, Qt, QSize
 from PyQt5.QtGui import QIcon, QTextBlockFormat, QPixmap, QFont
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QFileDialog, QTextEdit, \
     QMainWindow, QLineEdit, QLabel, QGridLayout, QHBoxLayout, QProgressBar, QMessageBox, QListWidget, qApp
 
-from GUIPackage.ContractQPushButton import ContractQPushButton, ContractQText, SelectQPushButton, SelectQText
+from GUIPackage.ContractQPushButton import ContractQPushButton, SelectQPushButton, SelectQText, SelectQCombo
 from GUIPackage.DisplayImageWidget import ImageViewer
 from GUIPackage.StatisticsGUI import StatisticsGUI
 from GUIPackage.TrainGUI import TrainGUI
@@ -320,6 +318,15 @@ class FileDialog(QWidget):
         layout.addLayout(SelectQPushButton(self.btnDest))
         layout.addLayout(SelectQText(self.textDest))
         layout.addStretch(1)
+
+        # Select data set
+        self.select_ds_label = QLabel("Select dataset")
+        self.select_ds = DataSetsManager.get_data_set_combo()
+        self.select_ds.setObjectName("SelectCombo")
+        self.select_ds.currentTextChanged.connect(self.on_data_set_changed)
+        layout.addLayout(SelectQCombo(self.select_ds_label, self.select_ds), 2)
+        layout.addStretch(1)
+
         # Select weights file
         self.btnW = QPushButton("Select weights file")
         self.btnW.clicked.connect(self.get_weights)
@@ -363,12 +370,8 @@ class FileDialog(QWidget):
         self.args.images = ["../S1.jpg"]
         self.textDest.setText("../det")
         self.args.det = "../det"
-        self.textW.setText("../weights/Swedish.weights")
-        self.args.weights = "../weights/Swedish.weights"
-        self.textConf.setText("../cfg/Swedish.cfg")
-        self.args.cfg = "../cfg/Swedish.cfg"
-        self.textNames.setText("../data/Swedish.names")
-        self.args.names = "../data/Swedish.names"
+        self.on_data_set_changed('Swedish')
+        self.select_ds.setCurrentText('Swedish')
 
         grid = QGridLayout()
         grid.setSpacing(10)
@@ -462,6 +465,15 @@ class FileDialog(QWidget):
     def back_detection(self):
         self.parent.back_to_parent()
 
+    def on_data_set_changed(self, text):
+        self.args.weights = f"../weights/{text}.weights"
+        self.textW.setText(self.args.weights)
+
+        self.args.cfg = f"../cfg/{text}.cfg"
+        self.textConf.setText(self.args.cfg)
+
+        self.args.names = f"../data/{text}.names"
+        self.textNames.setText(self.args.names)
 
 def init_resources():
     DataSetsManager.get_instance()

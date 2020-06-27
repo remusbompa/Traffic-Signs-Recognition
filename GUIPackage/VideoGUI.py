@@ -69,6 +69,9 @@ class FileDialog(QWidget):
         super().__init__()
         self.parent = parent
         self.args = argparse.Namespace()
+        self.args.is_classifier = False
+        self.classifier_cfg = None
+        self.classifier_weights = None
         self.setWindowIcon(QIcon('../images/Logo.png'))
         layout = QVBoxLayout()
 
@@ -87,18 +90,11 @@ class FileDialog(QWidget):
         self.textIm = QTextEdit()
         layout.addLayout(horizontal_layout, 1)
         layout.addStretch(1)
-        layout.addLayout(SelectQPushButton(self.btnIm),1)
+        layout.addLayout(SelectQPushButton(self.btnIm), 1)
         layout.addLayout(SelectQText(self.textIm), 2)
         layout.addStretch(1)
         self.textIm.setReadOnly(True)
-        # Select destination folder
-        self.btn_det = QPushButton("Select destination folder")
-        self.btn_det.clicked.connect(self.get_destination)
-        self.text_det = QLineEdit()
-        self.text_det.setReadOnly(True)
-        layout.addLayout(SelectQPushButton(self.btn_det), 1)
-        layout.addLayout(SelectQText(self.text_det), 1)
-        layout.addStretch(1)
+
         # Select data set
         self.select_ds_label = QLabel("Select dataset")
         self.select_ds = DataSetsManager.get_data_set_combo()
@@ -111,7 +107,7 @@ class FileDialog(QWidget):
         self.btnW.clicked.connect(self.get_weights)
         self.textW = QLineEdit()
         self.textW.setReadOnly(True)
-        layout.addLayout(SelectQPushButton(self.btnW),1)
+        layout.addLayout(SelectQPushButton(self.btnW), 1)
         layout.addLayout(SelectQPushButton(self.textW), 1)
         layout.addStretch(1)
         # Select Config file
@@ -145,10 +141,8 @@ class FileDialog(QWidget):
         self.nmsEdit.setText("0.4")
         self.resEdit.setText("416")
 
-        self.textIm.setText("../driving_Sweden.mp4")
-        self.args.video = "../driving_Sweden.mp4"
-        self.text_det.setText("../det")
-        self.args.det = "../det"
+        self.textIm.setText("../vid1_Driving_in_Gothenburg_Sweden.mp4")
+        self.args.video = "../vid1_Driving_in_Gothenburg_Sweden.mp4"
         self.on_data_set_changed('Swedish')
         self.select_ds.setCurrentText('Swedish')
 
@@ -188,8 +182,18 @@ class FileDialog(QWidget):
         self.select_tracking.setObjectName("SelectCombo")
         self.select_tracking.addItems(["Sort", "Deep Sort"])
         self.select_tracking.currentIndexChanged.connect(self.selection_tracking_change)
-        self.select_tracking.itemText(1)
+        self.select_tracking.setCurrentIndex(1)
         layout.addLayout(SelectQCombo(self.select_tracking_label, self.select_tracking), 2)
+
+        count_layout = QHBoxLayout()
+        self.count_enabled = False
+        self.use_count = QCheckBox("Count performance")
+        self.use_count.setChecked(False)
+        self.use_count_label = QLabel("Count statistics: ")
+        count_layout.addWidget(self.use_count_label)
+        count_layout.addWidget(self.use_count)
+        count_layout.addStretch(1)
+        layout.addLayout(count_layout, 1)
 
         layout.addStretch(1)
 
@@ -249,14 +253,6 @@ class FileDialog(QWidget):
             self.select_tracking_label.hide()
             self.tracking = None
 
-    def get_destination(self):
-        dir_dest = QFileDialog.getExistingDirectory(self, "Open Directory",
-                                                    self.startDir, QFileDialog.ShowDirsOnly)
-        if dir_dest:
-            self.args.det = dir_dest
-            self.text_det.setText(dir_dest)
-            self.startDir = dir_dest
-
     def get_weights(self):
         filename = QFileDialog.getOpenFileName(self, 'Open Weightsfile', self.startDir, 'Weightsfile (*.weights)',
                                                "", QFileDialog.DontUseNativeDialog)
@@ -291,7 +287,20 @@ class FileDialog(QWidget):
             if not arg:
                 QMessageBox.critical(self, "Error!", f"Parameter {arg} is empty!")
 
+        self.count_enabled = self.use_count.isChecked()
+        if self.select_ds.currentText() in ["European", "Belgium", "GTSRB"]:
+            self.args.is_classifier = True
+            base_model = "Croat"
+            self.set_classifier_parameters(base_model)
         self.parent.show_video_viewer("Video Viewer")
+
+    def set_classifier_parameters(self, set_name):
+        self.args.classifier_cfg = f"../cfg/{set_name}.cfg"
+        self.args.classifier_weights = f"../weights/{set_name}.weights"
+        self.args.classifier_names = f"../data/{set_name}.names"
+        self.args.classifier_inp_dim = 416
+        self.args.classifier_confidence = 0.5
+        self.args.classifier_nms_thresh = 0.4
 
     def back_detection(self):
         self.parent.back_to_parent()

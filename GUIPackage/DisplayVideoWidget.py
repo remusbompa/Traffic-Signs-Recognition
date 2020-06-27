@@ -13,6 +13,8 @@ from VisionPackage.DrawImages import ImageHandler, ContourHandler
 from GUIPackage.WorkerImageDetection import WorkerVideoDetection
 from moviepy.editor import VideoFileClip
 
+from tracking import KalmanBoxTracker
+
 
 def adjust_scrollbar(scroll_bar, factor):
     scroll_bar.setValue(int(factor * scroll_bar.value()
@@ -31,7 +33,7 @@ def get_length(filename):
 
 class VideoViewer(QMainWindow):
 
-    def __init__(self, title, parent = None):
+    def __init__(self, title, parent=None):
         super(VideoViewer, self).__init__(parent)
         self.parent = parent
         self.tracking = parent.widget.tracking
@@ -242,18 +244,31 @@ class DisplayVideoWidget(QWidget):
         self.parent = parent
         self.fitToWindowAct = self.parent.fitToWindowAct
         self.img_handler = None
+        self.count_enabled = parent.parent.widget.count_enabled
 
         layout_h = QSplitter(Qt.Horizontal)
         layout_hv1 = QVBoxLayout()
         self.label1 = QLabel("Processing video infos:")
         self.textEdit1 = QTextEdit()
         self.textEdit1.setReadOnly(True)
-
         layout_hv1.addWidget(self.label1)
         layout_hv1.addWidget(self.textEdit1)
         topleft = QWidget(self)
         topleft.setLayout(layout_hv1)
         layout_h.addWidget(topleft)
+
+        self.textEdit3 = None
+        self.center = None
+        if self.count_enabled:
+            layout_hv3 = QVBoxLayout()
+            self.label3 = QLabel("Count statistics:")
+            self.textEdit3 = QTextEdit()
+            self.textEdit3.setReadOnly(True)
+            layout_hv3.addWidget(self.label3)
+            layout_hv3.addWidget(self.textEdit3)
+            self.center = QWidget(self)
+            self.center.setLayout(layout_hv3)
+            layout_h.addWidget(self.center)
 
         layout_hv2 = QVBoxLayout()
         self.label2 = QLabel("Select a contour")
@@ -264,7 +279,10 @@ class DisplayVideoWidget(QWidget):
         topright.setLayout(layout_hv2)
         layout_h.addWidget(topright)
 
-        layout_h.setSizes([500, 100])
+        if self.count_enabled:
+            layout_h.setSizes([400, 100, 100])
+        else:
+            layout_h.setSizes([400, 200])
 
         layout_v = QSplitter(Qt.Vertical)
         layout_v.addWidget(layout_h)
@@ -331,6 +349,40 @@ class DisplayVideoWidget(QWidget):
         self.scrollArea.setBackgroundRole(QPalette.Dark)
         self.scrollArea.setWidget(self.image_frame)
         self.scrollArea.setVisible(True)
+
+        self.tp = 0
+        self.fp = 0
+        self.fn = 0
+
+    def keyPressEvent(self, event):
+        if self.count_enabled and type(event) == QtGui.QKeyEvent:
+            if event.key() == Qt.Key_T:
+                self.tp += 1
+                self.update_counts()
+            elif event.key() == Qt.Key_F:
+                self.fp += 1
+                self.update_counts()
+            elif event.key() == Qt.Key_N:
+                self.fn += 1
+                self.update_counts()
+
+    def update_counts(self):
+        self.textEdit3.clear()
+        self.textEdit3.append(f"TP: {self.tp}")
+        self.textEdit3.append(f"FP: {self.fp}")
+        self.textEdit3.append(f"FN: {self.fn}")
+        if self.tp + self.fp == 0:
+            precision = 0
+        else:
+            precision = self.tp / (self.tp + self.fp)
+        if self.tp + self.fp == 0:
+            recall = 0
+        else:
+            recall = self.tp / (self.tp + self.fn)
+        accuracy = self.tp / (self.tp + self.fp + self.fn)
+        self.textEdit3.append(f"<b>Precision</b>: {precision}")
+        self.textEdit3.append(f"<b>Recall</b>: {recall}")
+        self.textEdit3.append(f"<b>Accuracy</b>: {accuracy}")
 
     def finished_process(self):
         QMessageBox.information(self, "Done!", "Done detecting video!")
@@ -405,6 +457,7 @@ class DisplayVideoWidget(QWidget):
         self.obj.cancel = True
 
     def back_process(self):
+        KalmanBoxTracker.count = 0
         self.parent.back_to_parent()
 
     def init_image(self, image):
@@ -463,8 +516,11 @@ class DisplayVideoWidget(QWidget):
                 text_edit.append(f"Contour top margin: {top}")
                 text_edit.append(f"Object confidence: {contour.obj_conf}")
                 text_edit.append(f"Class score: {contour.cls_score}")
-                text_edit.append(f"Label: {contour.label}")
-                text_edit.append(f"Tracking ID: {contour.track_id}")
+                text_edit.append(f"Label: <b>{contour.label}</b>")
+                if contour.id_track == -1:
+                    text_edit.append(f"Tracking ID: No tracking")
+                else:
+                    text_edit.append(f"Tracking ID: {contour.id_track}")
                 text_edit.append("Color: ")
                 pix_map = QPixmap(20, 20)
                 b, g, r = contour.color
@@ -494,8 +550,11 @@ class DisplayVideoWidget(QWidget):
         text_edit.append(f"Contour top margin: {top}")
         text_edit.append(f"Object confidence: {contour.obj_conf}")
         text_edit.append(f"Class score: {contour.cls_score}")
-        text_edit.append(f"Label: {contour.label}")
-        text_edit.append(f"Tracking ID: {contour.id_track}")
+        text_edit.append(f"Label: <b>{contour.label}</b>")
+        if contour.id_track == -1:
+            text_edit.append(f"Tracking ID: No tracking")
+        else:
+            text_edit.append(f"Tracking ID: {contour.id_track}")
 
         text_edit.append("Color: ")
         pix_map = QPixmap(20, 20)

@@ -157,16 +157,14 @@ class DeepSort:
         dets = []
         for i in range(len(detections)):
             d = detections[i]
-            dets.append(Detection(d[1:5], d[5], features[i], d[6], d[7]))
+            dets.append(Detection(d[1:5], d[5], features[i], d[7], d[6]))
 
-        """
-        outboxes = np.array([d.tlwh for d in dets])
+        outboxes = np.array([d.to_tlwh() for d in dets])
 
         outscores = np.array([d.confidence for d in dets])
         indices = non_max_suppression(outboxes, 0.8, outscores)
 
         dets = [dets[i] for i in indices]
-        """
 
         self.tracker.predict()
         self.tracker.update(dets)

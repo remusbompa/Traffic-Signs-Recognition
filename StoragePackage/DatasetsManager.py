@@ -90,6 +90,7 @@ class DataSetManager:
         in_stream = QTextStream(f)
         self.html_text = in_stream.readAll()
         f.close()
-        self.parameters = [f"./Tests/{name}/{name}.data",
-                           f"./Tests/{name}/{name}-yolov3.cfg",
-                           f"./Tests/{name}/backup/{name}-yolov3_last.weights"]
+        base_name = name.split('-')[0]
+        self.parameters = [f"./Tests/{name}/{base_name}.data",
+                           f"./Tests/{name}/{base_name}-yolov3.cfg",
+                           f"./Tests/{name}/backup/{base_name}-yolov3_last.weights"]
