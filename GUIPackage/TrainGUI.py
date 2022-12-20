@@ -95,7 +95,7 @@ class FileDialog(QWidget):
         self.gpu_info.setStyleSheet("QTextEdit { background-color: rgba(255, 255, 255, 200) }")
         self.process_gpu_info = QProcess(self)
         self.process_gpu_info.setProgram("/bin/sh")
-        ssh_args = ["-c", "sshpass -p stud_remus ssh remus@141.85.232.73 nvidia-smi -l 1"]
+        ssh_args = ["-c", "sshpass -p password ssh user@IP nvidia-smi -l 1"]
         self.process_gpu_info.setProcessChannelMode(QProcess.MergedChannels)
         self.process_gpu_info.setArguments(ssh_args)
         self.process_gpu_info.readyReadStandardOutput.connect(self.on_output_gpu_info)
